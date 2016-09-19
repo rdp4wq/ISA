@@ -1,0 +1,10 @@
+models:
+    build:  ./
+    external_links:
+      -  mysql:db
+    volumes:
+      - ./sugar:/app/sugar
+    ports:
+      - "8001:8000"
+    command: bash -c "python /app/sugar/manage.py makemigrations && python /app/sugar/manage.py migrate && python /app/sugar/manage.py loaddata db.json && mod_wsgi-express start-server --working-directory /app/sugar --reload-on-changes /app/sugar/sugar/wsgi.py"
+
