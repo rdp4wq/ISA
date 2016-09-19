@@ -1,6 +1,9 @@
 # Django
 sugar/sugarapp/migrations/
 
+# Pycharm
+sugar/.idea/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
