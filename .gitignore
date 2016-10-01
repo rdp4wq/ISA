@@ -93,3 +93,9 @@ ENV/
 
 # Rope project settings
 .ropeproject
+web/.idea/.name
+web/.idea/misc.xml
+web/.idea/modules.xml
+web/.idea/vcs.xml
+web/.idea/web.iml
+web/.idea/workspace.xml

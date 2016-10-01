@@ -1,3 +1,10 @@
+web:
+   image: tp33/django
+   volumes:
+      - ./web:/app/web
+   ports:
+      - "8002:8000"
+   command: bash -c "mod_wsgi-express start-server --url-alias /static /app/web/webapp/static --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
 models:
     build:  ./
     external_links:
@@ -7,4 +14,3 @@ models:
     ports:
       - "8001:8000"
     command: bash -c "python /app/sugar/manage.py makemigrations && python /app/sugar/manage.py migrate && python /app/sugar/manage.py loaddata db.json && mod_wsgi-express start-server --working-directory /app/sugar --reload-on-changes /app/sugar/sugar/wsgi.py"
-
