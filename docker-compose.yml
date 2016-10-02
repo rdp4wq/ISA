@@ -1,5 +1,5 @@
 web:
-   image: tp33/django
+   build: ./
    volumes:
       - ./web:/app/web
    ports:

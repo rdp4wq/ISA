@@ -12,7 +12,8 @@ RUN pip install --upgrade pip \
 	&& pip install "kafka-python<=1.0" \
 	&& pip install "elasticsearch<3.0" \
 	&& pip install "Pillow<3.1" \
-	&& pip install djangorestframework 
+	&& pip install djangorestframework \
+	&& pip install requests
 
 ENV LANG=en_US.UTF-8 PYTHONHASHSEED=random \
     PATH=/usr/local/python/bin:/usr/local/apache/bin:$PATH \
