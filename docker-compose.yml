@@ -6,7 +6,14 @@ web:
       - "8002:8000"
    command: bash -c "pip install requests && mod_wsgi-express start-server --url-alias /static /app/web/webapp/static --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
 
-
+services:
+   build: ./
+   volumes:
+      - ./services:/app/services
+   ports:
+      - "8003:8000"
+   command: bash -c "pip install requests && mod_wsgi-express start-server --working-directory /app/services --reload-on-changes /app/services/services/wsgi.py"
+   
 models:
     build:  ./
     external_links:

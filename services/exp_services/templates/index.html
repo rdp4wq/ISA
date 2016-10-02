@@ -7,5 +7,14 @@
 <body>
     <p>Daddies</p>
     {{ daddies }}
+
+    {% for daddy in daddies %}
+        <li>{{ daddy }}</li>
+    {% endfor %}
+
+    <p>Response</p>
+    {{ response }}
+    <p>JSON</p>
+    {{ json }}
 </body>
 </html>
