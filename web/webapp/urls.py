@@ -4,5 +4,6 @@ import webapp.views as views
 
 urlpatterns = [
 
-    url(r'^$', views.index)
+    url(r'^$', views.index),
+    url(r'api/v1/daddies', views.daddies)
 ]

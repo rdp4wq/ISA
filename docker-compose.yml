@@ -1,10 +1,12 @@
 web:
-   image: tp33/django
+   build: ./
    volumes:
       - ./web:/app/web
    ports:
       - "8002:8000"
-   command: bash -c "mod_wsgi-express start-server --url-alias /static /app/web/webapp/static --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
+   command: bash -c "pip install requests && mod_wsgi-express start-server --url-alias /static /app/web/webapp/static --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
+
+
 models:
     build:  ./
     external_links:
