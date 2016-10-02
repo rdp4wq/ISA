@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import generics
-from sugarapp.models import Baby, Daddy
-from sugarapp.serializers import BabySerializer, DaddySerializer
+from entitiesapp.models import Baby, Daddy
+from entitiesapp.serializers import BabySerializer, DaddySerializer
 
 
 class BabyDetail(generics.RetrieveUpdateDestroyAPIView):

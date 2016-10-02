@@ -1,32 +1,32 @@
-models:
+entities:
     build:  ./
-    container_name: sugar_models
+    container_name: sugar_entities
     external_links:
       -  mysql:db
     volumes:
-      - ./sugar:/app/sugar
+      - ./entities:/app/entities
     ports:
       - "8003:8000"
-    command: bash -c "python /app/sugar/manage.py makemigrations && python /app/sugar/manage.py migrate && python /app/sugar/manage.py loaddata db.json && mod_wsgi-express start-server --working-directory /app/sugar --reload-on-changes /app/sugar/sugar/wsgi.py"
+    command: bash -c "python /app/entities/manage.py makemigrations && python /app/entities/manage.py migrate && python /app/entities/manage.py loaddata db.json && mod_wsgi-express start-server --working-directory /app/entities --reload-on-changes /app/entities/entities/wsgi.py"
 
 services:
-   build: ./
-   container_name: sugar_services
-   links:
-      - models
-   volumes:
-      - ./services:/app/services
-   ports:
-      - "8002:8000"
-   command: bash -c "pip install requests && mod_wsgi-express start-server --working-directory /app/services --reload-on-changes /app/services/services/wsgi.py"
+    build: ./
+    container_name: sugar_services
+    links:
+       - entities
+    volumes:
+       - ./services:/app/services
+    ports:
+       - "8002:8000"
+    command: bash -c "pip install requests && mod_wsgi-express start-server --working-directory /app/services --reload-on-changes /app/services/services/wsgi.py"
 
 web:
-   build: ./
-   container_name: sugar_web
-   links:
-      - services
-   volumes:
-      - ./web:/app/web
-   ports:
-      - "8001:8000"
-   command: bash -c "pip install requests && mod_wsgi-express start-server --url-alias /static /app/web/webapp/static --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
+    build: ./
+    container_name: sugar_web
+    links:
+       - services
+    volumes:
+       - ./web:/app/web
+    ports:
+       - "8001:8000"
+    command: bash -c "pip install requests && mod_wsgi-express start-server --url-alias /static /app/web/webapp/static --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"

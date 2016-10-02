@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from sugarapp.models import Baby, Daddy
+from entitiesapp.models import Baby, Daddy
 
 
 class BabySerializer(serializers.ModelSerializer):

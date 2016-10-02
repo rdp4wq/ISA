@@ -1,6 +1,6 @@
 [
   {
-    "model": "sugarapp.Baby",
+    "model": "entitiesapp.Baby",
     "fields": {
       "first_name": "Patrick",
       "last_name": "Maribojoc",
@@ -8,7 +8,7 @@
     }
   },
   {
-    "model": "sugarapp.Baby",
+    "model": "entitiesapp.Baby",
     "fields": {
       "first_name": "Zophie",
       "last_name": "Quan",
@@ -16,7 +16,7 @@
     }
   },
   {
-    "model": "sugarapp.Baby",
+    "model": "entitiesapp.Baby",
     "fields": {
       "first_name": "Ryan",
       "last_name": "Probus",
@@ -24,7 +24,7 @@
     }
   },
   {
-    "model": "sugarapp.Daddy",
+    "model": "entitiesapp.Daddy",
     "fields": {
       "first_name": "Jack",
       "last_name": "Lumber",
@@ -32,7 +32,7 @@
     }
   },
   {
-    "model": "sugarapp.Daddy",
+    "model": "entitiesapp.Daddy",
     "fields": {
       "first_name": "High",
       "last_name": "Roller",
