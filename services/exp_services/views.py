@@ -4,7 +4,7 @@ import requests
 
 def get_daddies_from_models(request):
     #Call daddies endpoint in Model container
-    url = 'http://192.168.99.100:8001/api/v1/daddies/'
+    url = 'http://isa_models_1:8000/api/v1/daddies/'
     #Make GET
     r = requests.get(url)
     #Format response as json

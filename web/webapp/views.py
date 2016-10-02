@@ -7,7 +7,7 @@ def index(request):
 
 def daddies(request):
     #Endpoint in Services container to return all daddies
-    url = 'http://192.168.99.100:8003/api/v1/services/daddies'
+    url = 'http://isa_services_1:8000/api/v1/services/daddies'
     #Make GET request
     daddies_json = requests.get(url)
     #Make template context
