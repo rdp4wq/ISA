@@ -13,7 +13,7 @@ class BabyList(generics.ListCreateAPIView):
     serializer_class = BabySerializer
     def list(self, request, *args, **kwargs):
         response = super(BabyList, self).list(request, *args, **kwargs) # call the original 'list'
-        response.data = {"babbies": response.data} # customize the response data
+        response.data = {"babies": response.data} # customize the response data
         return response # return response with this custom representation
 
 class DaddyDetail(generics.RetrieveUpdateDestroyAPIView):
