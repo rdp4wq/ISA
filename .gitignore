@@ -1,8 +1,8 @@
 # Django
-sugar/sugarapp/migrations/
+entities/entitiesapp/migrations/
 
 # Pycharm
-sugar/.idea/
+entities/.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
