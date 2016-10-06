@@ -4,7 +4,9 @@
     "fields": {
       "first_name": "Patrick",
       "last_name": "Maribojoc",
-      "id": 1
+      "id": 1,
+      "city": "Fairfax",
+      "state": "VA"
     }
   },
   {
@@ -12,7 +14,9 @@
     "fields": {
       "first_name": "Zophie",
       "last_name": "Quan",
-      "id": 2
+      "id": 2,
+      "city": "Charlottesville",
+      "state": "VA"
     }
   },
   {
@@ -20,7 +24,9 @@
     "fields": {
       "first_name": "Ryan",
       "last_name": "Probus",
-      "id": 3
+      "id": 3,
+      "city": "Falls Church",
+      "state": "VA"
     }
   },
   {
@@ -28,7 +34,10 @@
     "fields": {
       "first_name": "Jack",
       "last_name": "Lumber",
-      "id": 1
+      "id": 1,
+      "income": 1000000,
+      "city": "Fairfax",
+      "state": "VA"
     }
   },
   {
@@ -36,7 +45,10 @@
     "fields": {
       "first_name": "High",
       "last_name": "Roller",
-      "id": 2
+      "id": 2,
+      "income": 2000000,
+      "city": "Charlottesville",
+      "state": "VA"
     }
   }
 
