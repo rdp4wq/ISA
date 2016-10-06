@@ -5,6 +5,7 @@
       "first_name": "Patrick",
       "last_name": "Maribojoc",
       "id": 1,
+      "cost": 150000,
       "city": "Fairfax",
       "state": "VA"
     }
@@ -15,6 +16,7 @@
       "first_name": "Zophie",
       "last_name": "Quan",
       "id": 2,
+      "cost": 2000000,
       "city": "Charlottesville",
       "state": "VA"
     }
@@ -25,6 +27,7 @@
       "first_name": "Ryan",
       "last_name": "Probus",
       "id": 3,
+      "cost": 3000,
       "city": "Falls Church",
       "state": "VA"
     }

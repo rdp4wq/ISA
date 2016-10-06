@@ -19,6 +19,7 @@ class Baby(models.Model):
     last_name = models.TextField(max_length=50)
     city = models.TextField(max_length=50, default='Charlottesville')
     state = models.CharField(max_length=2, choices=us_states, default=us_states[0][0])
+    cost = models.PositiveIntegerField(blank=True, null=True, default=None)
 
 class Daddy(models.Model):
     first_name = models.TextField(max_length=50)
