@@ -113,3 +113,7 @@ STATICFILES_FINDERS = (
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+# URLS
+SERVICES_URL = 'http://sugar_services:8000/'
+

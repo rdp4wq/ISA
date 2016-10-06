@@ -1,6 +1,7 @@
 from django.shortcuts import render
 import requests
 import json
+from web.settings import SERVICES_URL
 
 # Create your views here.
 def index(request):
@@ -8,7 +9,7 @@ def index(request):
 
 def daddies(request):
     #Endpoint in Services container to return all daddies
-    url = 'http://sugar_services:8000/api/v1/services/daddies'
+    url = SERVICES_URL + 'api/v1/services/daddies'
     #Make GET request
     daddies_json = requests.get(url)
     #Make template context
@@ -18,7 +19,7 @@ def daddies(request):
 
 def babies(request):
     #Endpoint in Services container to return all daddies
-    url = 'http://sugar_services:8000/api/v1/services/babies'
+    url = SERVICES_URL + 'api/v1/services/babies'
     #Make GET request
     babies_json = requests.get(url)
     #Make template context
@@ -28,7 +29,7 @@ def babies(request):
 
 def babyDetail(request, baby_id):
     #Endpoint in Services container to return a single baby
-    url = 'http://sugar_services:8000/api/v1/services/babies/' + baby_id + '/'
+    url = SERVICES_URL + 'api/v1/services/babies/' + baby_id + '/'
     #Make GET request
     baby_json = requests.get(url)
     #Convert json into dict, make template context
