@@ -103,3 +103,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#URL
+ENTITIES_URL = 'http://sugar_entities:8000/'

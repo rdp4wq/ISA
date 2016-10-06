@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 import requests
+from services.settings import ENTITIES_URL
 
 def get_daddies_from_models(request):
     #Call daddies endpoint in Model container
-    url = 'http://sugar_entities:8000/api/v1/daddies/'
+    # url = 'http://sugar_entities:8000/api/v1/daddies/'
+    url = ENTITIES_URL + 'api/v1/daddies/'
     #Make GET
     r = requests.get(url)
     #Format response as json
@@ -14,7 +16,8 @@ def get_daddies_from_models(request):
 
 def get_babies_from_models(request):
     #Call daddies endpoint in Model container
-    url = 'http://sugar_entities:8000/api/v1/babies/'
+    # url = 'http://sugar_entities:8000/api/v1/babies/'
+    url = ENTITIES_URL + 'api/v1/babies/'
     #Make GET
     r = requests.get(url)
     #Format response as json
@@ -24,7 +27,8 @@ def get_babies_from_models(request):
 
 def get_baby_from_models(request, pk):
     #Call daddies endpoint in Model container
-    url = 'http://sugar_entities:8000/api/v1/babies/' + pk + '/'
+    # url = 'http://sugar_entities:8000/api/v1/babies/' + pk + '/'
+    url = ENTITIES_URL + 'api/v1/babies/' + pk + '/'
     #Make GET
     r = requests.get(url)
     #Format response as json
