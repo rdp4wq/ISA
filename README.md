@@ -1,7 +1,8 @@
 # ISA
-CS 4501 Project
-User Stories and User Tests
+##CS 4501 Project
+##User Stories and User Tests
 User Story | Unit Test
+---|---
 As a baby, I want to be able to see a single daddy | test_daddy, test_no_daddy
 As a baby, I want to be able to see a list of daddies | test_daddies_list
 As a baby, I want to be able to see a daddy's income | test_daddies_income
