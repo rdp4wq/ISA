@@ -21,3 +21,13 @@ def get_babies_from_models(request):
     babies_json = r.json()
     #Return json response
     return JsonResponse(babies_json, content_type='application/json')
+
+def get_baby_from_models(request, pk):
+    #Call daddies endpoint in Model container
+    url = 'http://sugar_entities:8000/api/v1/babies/' + pk + '/'
+    #Make GET
+    r = requests.get(url)
+    #Format response as json
+    baby_json = r.json()
+    #Return json response
+    return JsonResponse(baby_json, content_type='application/json')
