@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load static %}
+
+{% block body_block %}
+
+    <div class="row">
+        <div class="col-md-4">
+            <img src="{% static "images/pi.jpg" %}">
+        </div>
+        <div class="col-md-8">
+            <h1>{{ first_name }} {{ last_name }}</h1>
+            <br/>
+            <h3>Location: {{ city }}, {{ state }}</h3>
+            <br/>
+            <h4>Buy this baby for ${{ cost }}!</h4>
+        </div>
+    </div>
+
+
+
+{% endblock %}
