@@ -1,26 +1,29 @@
-from rest_framework import generics
-from entitiesapp.serializers import UserSerializer
-from entitiesapp.models import User, Authenticator
+from rest_framework import generics, viewsets
+from entitiesapp.serializers import UserSerializer, AuthenticatorSerializer, DateSerializer
+from entitiesapp.models import User, Authenticator, Date
 from django.views.decorators.http import require_POST
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import Http404, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserList(generics.ListCreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
+class EntitiesViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
-        response = super(UserList, self).list(request, *args, **kwargs)  # call the original 'list'
-        response.data = {'users': response.data}  # customize the response data
-        return response  # return response with this custom representation
+        response = super(EntitiesViewSet, self).list(request, *args, **kwargs)
+        response.data = {'result': response.data}
+        return response
 
+class UserViewSet(EntitiesViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class AuthentiactorViewSet(EntitiesViewSet):
+    queryset = Authenticator.objects.all()
+    serializer_class = AuthenticatorSerializer
+
+class DateViewSet(EntitiesViewSet):
+    queryset = Date.objects.all()
+    serializer_class = DateSerializer
 
 @csrf_exempt
 @require_POST

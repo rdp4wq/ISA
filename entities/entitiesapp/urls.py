@@ -1,8 +1,13 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 import entitiesapp.views as views
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'users', views.UserViewSet)
+router.register(r'authenticators', views.AuthentiactorViewSet)
+router.register(r'dates', views.DateViewSet)
 
 urlpatterns = [
-    url(r'^api/v1/users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view(), name='get_user'),
-    url(r'^api/v1/users/$', views.UserList.as_view(), name='get_users_list'),
-    url(r'^api/v1/login/$', views.login, name='login')
+    url(r'^api/v1/login/$', views.login, name='login'),
+    url(r'^api/v1/', include(router.urls)),
 ]
