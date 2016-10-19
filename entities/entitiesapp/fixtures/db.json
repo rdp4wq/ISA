@@ -1,57 +1,84 @@
 [
   {
-    "model": "entitiesapp.Baby",
+    "model": "entitiesapp.User",
     "fields": {
       "first_name": "Patrick",
       "last_name": "Maribojoc",
+      "email": "fake1@gmail.com",
+      "username": "Pat",
+      "password": "password",
+      "user_type": "Baby",
       "id": 1,
-      "cost": 150000,
       "city": "Fairfax",
-      "state": "VA"
+      "state": "VA",
+      "date_created": "2016-10-18",
+      "date_of_birth": "1990-01-01"
     }
   },
   {
-    "model": "entitiesapp.Baby",
+    "model": "entitiesapp.User",
     "fields": {
       "first_name": "Zophie",
       "last_name": "Quan",
+      "email": "fake2@gmail.com",
+      "username": "Zoph",
+      "password": "password",
+      "user_type": "Baby",
       "id": 2,
-      "cost": 2000000,
       "city": "Charlottesville",
-      "state": "VA"
+      "state": "VA",
+      "date_created": "2016-10-18",
+      "date_of_birth": "1990-01-01"
     }
   },
   {
-    "model": "entitiesapp.Baby",
+    "model": "entitiesapp.User",
     "fields": {
       "first_name": "Ryan",
       "last_name": "Probus",
+      "email": "fake3@gmail.com",
+      "username": "Ry",
+      "password": "password",
+      "user_type": "Baby",
       "id": 3,
-      "cost": 3000,
       "city": "Falls Church",
-      "state": "VA"
+      "state": "VA",
+      "date_created": "2016-10-18",
+      "date_of_birth": "1990-01-01"
     }
   },
   {
-    "model": "entitiesapp.Daddy",
+    "model": "entitiesapp.User",
     "fields": {
       "first_name": "Jack",
       "last_name": "Lumber",
-      "id": 1,
+      "email": "fake4@gmail.com",
+      "user_type": "Daddy",
+      "username": "BigJack",
+      "password": "password",
+      "id": 4,
       "income": 1000000,
       "city": "Fairfax",
-      "state": "VA"
+      "state": "VA",
+      "date_created": "2016-10-18",
+      "date_of_birth": "1990-01-01"
     }
   },
   {
-    "model": "entitiesapp.Daddy",
+    "model": "entitiesapp.User",
     "fields": {
       "first_name": "High",
       "last_name": "Roller",
-      "id": 2,
+      "email": "fake5@gmail.com",
+      "username": "MakeItRain1337",
+      "user_type": "Daddy",
+      "password": "password",
+      "id": 5,
       "income": 2000000,
       "city": "Charlottesville",
-      "state": "VA"
+      "state": "VA",
+      "date_created": "2016-10-18",
+      "date_of_birth": "1990-01-01"
     }
   }
 

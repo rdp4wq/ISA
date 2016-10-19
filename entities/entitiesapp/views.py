@@ -1,34 +1,34 @@
-from django.shortcuts import render
 from rest_framework import generics
-from entitiesapp.models import Baby, Daddy
-from entitiesapp.serializers import BabySerializer, DaddySerializer
+from entitiesapp.serializers import UserSerializer
+from entitiesapp.models import User, Authenticator
+from django.views.decorators.http import require_POST
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
-class BabyDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Baby.objects.all()
-    serializer_class = BabySerializer
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-class BabyList(generics.ListCreateAPIView):
-    queryset = Baby.objects.all()
-    serializer_class = BabySerializer
-    def list(self, request, *args, **kwargs):
-        response = super(BabyList, self).list(request, *args, **kwargs) # call the original 'list'
-        response.data = {"babies": response.data} # customize the response data
-        return response # return response with this custom representation
 
-class DaddyDetail(generics.RetrieveUpdateDestroyAPIView):
-
-    queryset = Daddy.objects.all()
-    serializer_class = DaddySerializer
-
-class DaddyList(generics.ListCreateAPIView):
-    queryset = Daddy.objects.all()
-    serializer_class = DaddySerializer
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
     def list(self, request, *args, **kwargs):
-        response = super(DaddyList, self).list(request, *args, **kwargs) # call the original 'list'
-        response.data = {"daddies": response.data} # customize the response data
-        return response # return response with this custom representation
+        response = super(UserList, self).list(request, *args, **kwargs)  # call the original 'list'
+        response.data = {'users': response.data}  # customize the response data
+        return response  # return response with this custom representation
 
-def index(request):
-    return render(request, 'babies/index.html')
+
+@csrf_exempt
+@require_POST
+def login(request):
+    try:
+        user = User.objects.filter(username=request.POST['username'], password=request.POST['password']).get()
+    except ObjectDoesNotExist:
+        raise Http404('Invalid login')
+    auth = Authenticator.create_authenticator(user)
+    auth.save()
+    return JsonResponse({'authenticator': auth.authenticator})

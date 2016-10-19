@@ -7,7 +7,7 @@ entities:
       - ./entities:/app/entities
     ports:
       - "8003:8000"
-    command: bash -c "python /app/entities/manage.py makemigrations && python /app/entities/manage.py migrate && python /app/entities/manage.py loaddata db.json && mod_wsgi-express start-server --working-directory /app/entities --reload-on-changes /app/entities/entities/wsgi.py"
+    command: bash -c "python /app/entities/manage.py makemigrations && python /app/entities/manage.py migrate --noinput && python /app/entities/manage.py loaddata db.json && mod_wsgi-express start-server --working-directory /app/entities --reload-on-changes /app/entities/entities/wsgi.py"
 
 services:
     build: ./

@@ -1,13 +1,11 @@
 from rest_framework import serializers
-from entitiesapp.models import Baby, Daddy
+from entitiesapp.models import User
 
 
-class BabySerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Baby
-        fields = ('id', 'first_name', 'last_name', 'cost', 'city', 'state')
-
-class DaddySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Daddy
-        fields = ('id', 'first_name', 'last_name', 'income', 'city', 'state')
+        model = User
+        fields = (
+            'id', 'first_name', 'last_name', 'email', 'username', 'user_type', 'date_created', 'date_of_birth',
+            'income', 'city', 'state', 'password'
+        )
