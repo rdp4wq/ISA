@@ -10,7 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 class EntitiesViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         response = super(EntitiesViewSet, self).list(request, *args, **kwargs)
-        response.data = {'result': response.data}
+        response.data = {'users': response.data}
         return response
 
 class UserViewSet(EntitiesViewSet):
