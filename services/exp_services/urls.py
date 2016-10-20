@@ -7,5 +7,6 @@ urlpatterns = [
     url(r'^api/v1/services/babies/$', views.get_babies_from_models),
     url(r'^api/v1/services/babies/(?P<pk>[0-9]+)/$', views.get_baby_from_models),
     url(r'^api/v1/services/daddies/$', views.get_daddies_from_models),
-    url(r'^api/v1/login/$', views.login)
+    url(r'^api/v1/login/$', views.login),
+    url(r'^api/v1/authenticate/$', views.authenticate)
 ]

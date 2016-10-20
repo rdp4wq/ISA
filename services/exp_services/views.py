@@ -72,6 +72,15 @@ def get_daddies_from_models(request):
 
 @csrf_exempt
 @require_POST
+def authenticate(request):
+    url = ENTITIES_URL + 'api/v1/authenticators/' + urlquote(request.POST['authenticator'])
+    r = requests.get(url)
+    auth = r.json()
+    return JsonResponse({'result': 'authenticator' in auth})
+
+
+@csrf_exempt
+@require_POST
 def login(request):
     # Call authenticators endpoint
     user_url = ENTITIES_URL + 'api/v1/users/username/' + urlquote(request.POST['username'])
