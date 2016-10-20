@@ -80,6 +80,15 @@
       "date_created": "2016-10-18",
       "date_of_birth": "1990-01-01"
     }
+  },
+  {
+	"model": "entitiesapp.Date",
+	"fields": {
+	  "user": 1,
+	  "price": 10000,
+	  "description": "Hot and steamy"
+	}
   }
+  
 
 ]

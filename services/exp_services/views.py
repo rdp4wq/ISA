@@ -69,6 +69,17 @@ def get_daddies_from_models(request):
     daddy_json['result'] = [user for user in daddy_json['result'] if user['user_type'] == 'Daddy']
     return JsonResponse(daddy_json, content_type='application/json')
 
+@csrf_exempt
+def create_date(request):
+    url = ENTITIES_URL + 'api/v1/dates/'
+    r = requests.post(url, request.POST)
+
+    return JsonResponse(r.json())
+
+def get_dates(request):
+    url = ENTITIES_URL + 'api/v1/dates/'
+    r = requests.get(url)
+    return JsonResponse(r.json())
 
 @csrf_exempt
 @require_POST
@@ -77,7 +88,6 @@ def authenticate(request):
     r = requests.get(url)
     auth = r.json()
     return JsonResponse({'result': 'authenticator' in auth})
-
 
 @csrf_exempt
 @require_POST
