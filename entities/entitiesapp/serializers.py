@@ -10,6 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
             'income', 'city', 'state', 'password'
         )
 
+
 class AuthenticatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Authenticator

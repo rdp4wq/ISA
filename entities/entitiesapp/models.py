@@ -39,15 +39,8 @@ class User(models.Model):
 
 class Authenticator(models.Model):
     user = models.OneToOneField(User, null=False)
-    authenticator = models.CharField(max_length=64, null=False)
+    authenticator = models.CharField(max_length=64, null=False, primary_key=True)
     date_created = models.DateField(auto_now_add=True)
-
-    @classmethod
-    def create_authenticator(cls, user):
-        Authenticator.objects.filter(user=user).delete()
-        auth_val = hmac.new(key=SECRET_KEY.encode('utf-8'), msg=os.urandom(32), digestmod='sha256').hexdigest()
-        auth = cls(user=user, authenticator=auth_val)
-        return auth
 
 
 class Date(models.Model):
