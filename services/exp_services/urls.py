@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^api/v1/authenticate/$', views.authenticate),
     url(r'api/v1/dates/new$', views.create_date),
     url(r'api/v1/dates/', views.get_dates),
+    url(r'api/v1/register/', views.create_user),
 
 ]

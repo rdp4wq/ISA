@@ -82,6 +82,13 @@ def get_dates(request):
     return JsonResponse(r.json())
 
 @csrf_exempt
+def create_user(request):
+    url = ENTITIES_URL + 'api/v1/users/'
+    r = requests.post(url, request.POST)
+
+    return JsonResponse(r.json())
+
+@csrf_exempt
 @require_POST
 def authenticate(request):
     url = ENTITIES_URL + 'api/v1/authenticators/' + urlquote(request.POST['authenticator'])
