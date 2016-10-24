@@ -69,6 +69,19 @@ def get_daddies_from_models(request):
     daddy_json['result'] = [user for user in daddy_json['result'] if user['user_type'] == 'Daddy']
     return JsonResponse(daddy_json, content_type='application/json')
 
+
+def get_daddy_from_models(request, pk):
+    # Call users endpoint in Model container
+    url = ENTITIES_URL + 'api/v1/users/' + urlquote(pk) + '/'
+    # Make GET
+    r = requests.get(url)
+    # Format response as json
+    daddy_json = r.json()
+    if daddy_json['user_type'] != 'Daddy':
+        raise Http404('Daddy does not exist')
+    return JsonResponse(daddy_json, content_type='application/json')
+
+
 @csrf_exempt
 def create_date(request):
     url = ENTITIES_URL + 'api/v1/dates/'
