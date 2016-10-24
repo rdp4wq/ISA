@@ -7,7 +7,7 @@ router.register(r'users/username', views.UserByUsernameViewSet)
 router.register(r'users', views.UserViewSet)
 router.register(r'authenticators/user', views.AuthenticatorByUserViewSet)
 router.register(r'authenticators', views.AuthenticatorViewSet)
-router.register(r'dates', views.DateViewSet)
+router.register(r'dates', views.DateViewSet, 'dates')
 
 
 urlpatterns = [
