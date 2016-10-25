@@ -30,7 +30,7 @@ def daddies(request):
 def babies(request):
     auth = request.COOKIES.get('auth')
     if not auth:
-        print()
+        return render(request, 'babies.html')
     else:
         # Endpoint in Services container to return all daddies
         url = SERVICES_URL + 'api/v1/services/babies'
@@ -58,7 +58,7 @@ def search(request):
     return render(request, 'search.html')
 
 
-# @csrf_exempt
+@csrf_exempt
 # @require_POST
 def login(request):
     if request.method == 'POST':
@@ -84,6 +84,7 @@ def login(request):
 
                 #save stuff from services in cookie
                 response.set_cookie("auth", final_json['authenticator'])
+                response.set_cookie("user", final_json['user'])
             except ValueError:  # includes simplejson.decoder.JSONDecodeError
                 raise Http404('Invalid login')
 
@@ -94,14 +95,13 @@ def login(request):
     return render(request, 'login.html', {'form': form})
 
 
-# @csrf_exempt
+@csrf_exempt
 # @require_POST
 def register(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-
             #####
             #This endpoint should take in form-data with the fields 'username' and 'password'
             #####
@@ -114,8 +114,7 @@ def register(request):
             return response
     else:
         form = RegisterForm()
-
-    return render(request, 'register.html', {'form': form})
+        return render(request, 'register.html', {'form': form})
 
 
 def logout(request):

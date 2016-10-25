@@ -5,6 +5,7 @@ from django.contrib.auth.hashers import check_password, make_password
 import requests
 import os
 import hmac
+import json
 from services.settings import ENTITIES_URL, SECRET_KEY
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
@@ -97,14 +98,15 @@ def get_dates(request):
 
 
 @csrf_exempt
-@require_POST
 def create_user(request):
     url = ENTITIES_URL + 'api/v1/users/'
     data = request.POST.copy()
     data['password'] = make_password(data['password'])
     r = requests.post(url, data)
+    jsonresponse = str(r.content, encoding='utf8')
+    final_json = json.loads(jsonresponse)
+    return JsonResponse(final_json, content_type='application/json')
 
-    return JsonResponse(r.json(), content_type='application/json')
 
 
 @csrf_exempt
