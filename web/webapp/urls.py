@@ -7,7 +7,8 @@ urlpatterns = [
     url(r'^babies/$', views.babies),
     url(r'^babies/(?P<baby_id>[0-9]+)/$', views.baby_detail),
     url(r'search', views.search),
-    url(r'login', views.login_page),
-    url(r'logout', views.logout)
+    url(r'login', views.login),
+    url(r'logout', views.logout),
+    url(r'register', views.register)
 
 ]

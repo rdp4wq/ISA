@@ -7,6 +7,8 @@ from django.core.urlresolvers import reverse
 import requests
 import json
 from web.settings import SERVICES_URL
+from web.forms import LoginForm, RegisterForm
+
 
 # Create your views here.
 def index(request):
@@ -56,30 +58,54 @@ def baby_detail(request, baby_id):
 def search(request):
     return render(request, 'search.html')
 
-def login_page(request):
-    return render(request, 'login.html')
 
 @csrf_exempt
-@require_POST
+# @require_POST
 def login(request):
+    form = LoginForm(request.POST or None, initial={'username': 'placeholder'})
 
-    #####
-    #This endpoint should take in form-data with the fields 'username' and 'password'
-    #####
-    url = SERVICES_URL + 'api/v1/login/'
+    if request.method == "POST":
+        #####
+        #This endpoint should take in form-data with the fields 'username' and 'password'
+        #####
+        url = SERVICES_URL + 'api/v1/login/'
 
-    #pass form data to services
-    r = requests.post(url, request.POST)
+        #pass form data to services
+        r = requests.post(url, request.POST)
 
-    #get back stuff from services
-    jsonresponse = str(r.content, encoding='utf8')
-    final_json = json.loads(jsonresponse)
+        #get back stuff from services
+        jsonresponse = str(r.content, encoding='utf8')
+        final_json = json.loads(jsonresponse)
 
-    #save stuff from services in cookie
-    response = render(request, "index.html")
-    response.set_cookie("auth", final_json['authenticator'])
+        #save stuff from services in cookie
+        response = render(request, "index.html")
+        response.set_cookie("auth", final_json['authenticator'])
 
-    return response
+        return response
+
+    return render(request, 'login.html', {'form': form})
+
+
+@csrf_exempt
+# @require_POST
+def register(request):
+    form = RegisterForm(request.POST or None, initial={'username': 'placeholder'})
+
+    if request.method == "POST":
+        #####
+        #This endpoint should take in form-data with the fields 'username' and 'password'
+        #####
+        url = SERVICES_URL + 'api/v1/register/'
+
+        #pass form data to services
+        r = requests.post(url, request.POST)
+
+        response = render(request, "index.html")
+
+        return response
+
+    return render(request, 'register.html', {'form': form})
+
 
 def logout(request):
     response = render(request, "index.html")
