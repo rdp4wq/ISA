@@ -99,7 +99,7 @@ def register(request):
             #####
             #This endpoint should take in form-data with the fields 'username' and 'password'
             #####
-            url = SERVICES_URL + 'api/v1/login/'
+            url = SERVICES_URL + 'api/v1/register/'
 
             #pass form data to services
             requests.post(url, request.POST)
