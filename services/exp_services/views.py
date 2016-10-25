@@ -89,17 +89,23 @@ def create_date(request):
 
     return JsonResponse(r.json())
 
+
 def get_dates(request):
     url = ENTITIES_URL + 'api/v1/dates/'
     r = requests.get(url)
     return JsonResponse(r.json())
 
+
 @csrf_exempt
+@require_POST
 def create_user(request):
     url = ENTITIES_URL + 'api/v1/users/'
-    r = requests.post(url, request.POST)
+    data = request.POST.copy()
+    data['password'] = make_password(data['password'])
+    r = requests.post(url, data)
 
     return JsonResponse(r.json())
+
 
 @csrf_exempt
 @require_POST
@@ -108,6 +114,7 @@ def authenticate(request):
     r = requests.get(url)
     auth = r.json()
     return JsonResponse({'result': 'authenticator' in auth})
+
 
 @csrf_exempt
 @require_POST
@@ -118,7 +125,7 @@ def login(request):
     user = r.json()
 
     # Check password, change this to hashes before turning in!!!
-    if user['password'] != request.POST['password']:
+    if not check_password(request.POST['password'], user['password']):
         raise Http404('Invalid login')
 
     # If authenticator for user already exists, delete the other one
