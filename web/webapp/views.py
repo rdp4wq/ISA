@@ -6,7 +6,7 @@ from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 
 from web.settings import SERVICES_URL
-from webapp.forms import LoginForm, RegisterForm
+from webapp.forms import LoginForm, RegisterForm, DateForm
 
 
 # Create your views here.
@@ -123,3 +123,33 @@ def logout(request):
     response.delete_cookie("auth")
 
     return response
+
+
+def create_date(request):
+    user = request.COOKIES.get('user')
+
+    if request.method == 'POST':
+        form = DateForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            date = form.save(commit=False)
+            date.user = user
+            date.save()
+
+            #####
+            #This endpoint should take in form-data with the fields 'username' and 'password'
+            #####
+            url = SERVICES_URL + 'api/v1/dates/new/'
+
+            #pass form data to services
+            requests.post(url, request.POST)
+
+            #get back stuff from services
+
+            response = render(request, "index.html")
+
+            return response
+    else:
+        form = DateForm()
+
+    return render(request, 'create.html', {'form': form})

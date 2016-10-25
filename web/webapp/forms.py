@@ -40,8 +40,13 @@ class RegisterForm(forms.Form):
     email = forms.CharField(label='Email', max_length=100, validators=[emailValidator])
     username = forms.CharField(label='Username', max_length=100, validators=[usernameValidator])
     password = forms.CharField(label='Password', max_length=100, validators=[passwordValidator], widget=PasswordInput())
-    date_of_birth = forms.DateField(label='Date of Birth', widget=extras.SelectDateWidget)
+    date_of_birth = forms.DateField(label='Date of Birth', widget=extras.SelectDateWidget(years=range(1980, 2017)))
     city = forms.CharField(label='City', max_length=100, validators=[basicValidator])
     state = forms.CharField(label='State', max_length=100, validators=[basicValidator])
     user_type = forms.ChoiceField(label='Are you a...', choices=USER_TYPE)
     income = forms.IntegerField(label='Income', initial=0)
+
+class DateForm(forms.Form):
+    user = forms.IntegerField(required=False)
+    price = forms.IntegerField(label='Price')
+    description = forms.CharField(label='Description')
