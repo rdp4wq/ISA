@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load static %}
 
-</body>
-</html>
+{% block body_block %}
+
+
+    <form action="/login/" method="post" enctype="application/x-www-form-urlencoded">
+        {% csrf_token %}
+        {% for field in form %}
+            {{ field.label_tag }}
+            <br/>
+            {{ field }}
+            <br/>
+            {{ field.errors }}
+            <br/>
+        {% endfor %}
+        <input type="submit" value="Submit" />
+    </form>
+
+
+
+{% endblock %}
