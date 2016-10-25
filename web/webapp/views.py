@@ -1,8 +1,9 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from django.core.urlresolvers import reverse
 import requests
 import json
 from web.settings import SERVICES_URL
@@ -55,6 +56,9 @@ def baby_detail(request, baby_id):
 def search(request):
     return render(request, 'search.html')
 
+def login_page(request):
+    return render(request, 'login.html')
+
 @csrf_exempt
 @require_POST
 def login(request):
@@ -74,5 +78,11 @@ def login(request):
     #save stuff from services in cookie
     response = render(request, "index.html")
     response.set_cookie("auth", final_json['authenticator'])
+
+    return response
+
+def logout(request):
+    response = render(request, "index.html")
+    response.delete_cookie("auth")
 
     return response
