@@ -1,10 +1,16 @@
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 import requests
 import json
 from web.settings import SERVICES_URL
 
 # Create your views here.
 def index(request):
+    # request.session.set_test_cookie()
+
     return render(request, 'index.html')
 
 
@@ -20,14 +26,18 @@ def daddies(request):
 
 
 def babies(request):
-    # Endpoint in Services container to return all daddies
-    url = SERVICES_URL + 'api/v1/services/babies'
-    # Make GET request
-    babies_json = requests.get(url)
-    # Make template context
-    context = {'babies': babies_json.content}
-    # Render template
-    return render(request, 'babies.html', context)
+    auth = request.COOKIES.get('auth')
+    if not auth:
+        print()
+    else:
+        # Endpoint in Services container to return all daddies
+        url = SERVICES_URL + 'api/v1/services/babies'
+        # Make GET request
+        babies_json = requests.get(url)
+        # Make template context
+        context = {'babies': babies_json.content}
+        # Render template
+        return render(request, 'babies.html', context)
 
 
 def baby_detail(request, baby_id):
@@ -44,3 +54,25 @@ def baby_detail(request, baby_id):
 
 def search(request):
     return render(request, 'search.html')
+
+@csrf_exempt
+@require_POST
+def login(request):
+
+    #####
+    #This endpoint should take in form-data with the fields 'username' and 'password'
+    #####
+    url = SERVICES_URL + 'api/v1/login/'
+
+    #pass form data to services
+    r = requests.post(url, request.POST)
+
+    #get back stuff from services
+    jsonresponse = str(r.content, encoding='utf8')
+    final_json = json.loads(jsonresponse)
+
+    #save stuff from services in cookie
+    response = render(request, "index.html")
+    response.set_cookie("auth", final_json['authenticator'])
+
+    return response

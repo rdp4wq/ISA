@@ -92,14 +92,14 @@ def create_date(request):
 def get_dates(request):
     url = ENTITIES_URL + 'api/v1/dates/'
     r = requests.get(url)
-    return JsonResponse(r.json())
+    return JsonResponse(r.json(), content_type='application/json')
 
 @csrf_exempt
 def create_user(request):
     url = ENTITIES_URL + 'api/v1/users/'
     r = requests.post(url, request.POST)
 
-    return JsonResponse(r.json())
+    return JsonResponse(r.json(), content_type='application/json')
 
 @csrf_exempt
 @require_POST
@@ -107,7 +107,7 @@ def authenticate(request):
     url = ENTITIES_URL + 'api/v1/authenticators/' + urlquote(request.POST['authenticator'])
     r = requests.get(url)
     auth = r.json()
-    return JsonResponse({'result': 'authenticator' in auth})
+    return JsonResponse({'result': 'authenticator' in auth}, content_type='application/json')
 
 @csrf_exempt
 @require_POST
@@ -136,4 +136,4 @@ def login(request):
     r = requests.post(auth_url, data=authenticator)
     auth_json = r.json()
 
-    return JsonResponse(auth_json)
+    return JsonResponse(auth_json, content_type='application/json')
