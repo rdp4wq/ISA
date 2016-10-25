@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import PasswordInput
+from django.forms import PasswordInput, extras
 from django.core.validators import RegexValidator
 
 basicValidator = RegexValidator(
@@ -29,14 +29,19 @@ class LoginForm(forms.Form):
     password = forms.CharField(label='Password', max_length=100, validators=[passwordValidator], widget=PasswordInput())
 
 
+USER_TYPE = (
+    ('Daddy', 'Daddy'),
+    ('Baby', 'Baby')
+)
+
 class RegisterForm(forms.Form):
     first_name = forms.CharField(label='First Name', max_length=100, validators=[basicValidator])
     last_name = forms.CharField(label='Last Name', max_length=100, validators=[basicValidator])
     email = forms.CharField(label='Email', max_length=100, validators=[emailValidator])
     username = forms.CharField(label='Username', max_length=100, validators=[usernameValidator])
     password = forms.CharField(label='Password', max_length=100, validators=[passwordValidator], widget=PasswordInput())
-    date_of_birth = forms.CharField(label='First Name', max_length=100, validators=[])
-    city = forms.CharField(label='First Name', max_length=100, validators=[])
-    state = forms.CharField(label='First Name', max_length=100, validators=[])
-    user_type = forms.CharField(label='First Name', max_length=100, validators=[])
-    income = forms.CharField(label='First Name', max_length=100, validators=[])
+    date_of_birth = forms.DateField(label='Date of Birth', widget=extras.SelectDateWidget)
+    city = forms.CharField(label='City', max_length=100, validators=[basicValidator])
+    state = forms.CharField(label='State', max_length=100, validators=[basicValidator])
+    user_type = forms.ChoiceField(label='Are you a...', choices=USER_TYPE)
+    income = forms.IntegerField(label='Income', initial=0)

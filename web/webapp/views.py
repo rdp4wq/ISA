@@ -81,7 +81,7 @@ def login(request):
             response = render(request, "index.html")
             response.set_cookie("auth", final_json['authenticator'])
 
-            # return response
+            return response
     else:
         form = LoginForm()
 
@@ -102,7 +102,10 @@ def register(request):
             url = SERVICES_URL + 'api/v1/login/'
 
             #pass form data to services
-            r = requests.post(url, request.POST)
+            requests.post(url, request.POST)
+
+            response = render(request, "index.html")
+            return response
     else:
         form = RegisterForm()
 
