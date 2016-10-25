@@ -2,6 +2,7 @@ import json
 
 import requests
 from django.shortcuts import render
+from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 
 from web.settings import SERVICES_URL
@@ -74,12 +75,17 @@ def login(request):
             r = requests.post(url, request.POST)
 
             #get back stuff from services
-            jsonresponse = str(r.content, encoding='utf8')
-            final_json = json.loads(jsonresponse)
 
-            #save stuff from services in cookie
             response = render(request, "index.html")
-            response.set_cookie("auth", final_json['authenticator'])
+
+            try:
+                jsonresponse = str(r.content, encoding='utf8')
+                final_json = json.loads(jsonresponse)
+
+                #save stuff from services in cookie
+                response.set_cookie("auth", final_json['authenticator'])
+            except ValueError:  # includes simplejson.decoder.JSONDecodeError
+                raise Http404('Invalid login')
 
             return response
     else:
