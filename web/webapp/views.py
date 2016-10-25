@@ -2,7 +2,7 @@ import json
 
 import requests
 from django.shortcuts import render
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from web.settings import SERVICES_URL
@@ -99,20 +99,26 @@ def login(request):
 # @require_POST
 def register(request):
     if request.method == 'POST':
+
         form = RegisterForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
+
+
             #####
             #This endpoint should take in form-data with the fields 'username' and 'password'
             #####
             url = SERVICES_URL + 'api/v1/register/'
 
             #pass form data to services
-            requests.post(url, request.POST)
+            r = requests.post(url, request.POST)
+            jsonresponse = str(r.content, encoding='utf8')
+            final_json = json.loads(jsonresponse)
 
+            # return HttpResponse(r.content)
             response = render(request, "index.html")
             return response
-    else:
+    if request.method == 'GET':
         form = RegisterForm()
         return render(request, 'register.html', {'form': form})
 
