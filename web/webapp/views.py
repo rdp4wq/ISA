@@ -88,6 +88,27 @@ def login(request):
     return render(request, 'login.html', {'form': form})
 
 
+# @csrf_exempt
+# @require_POST
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+
+            #####
+            #This endpoint should take in form-data with the fields 'username' and 'password'
+            #####
+            url = SERVICES_URL + 'api/v1/login/'
+
+            #pass form data to services
+            r = requests.post(url, request.POST)
+    else:
+        form = RegisterForm()
+
+    return render(request, 'register.html', {'form': form})
+
+
 def logout(request):
     response = render(request, "index.html")
     response.delete_cookie("auth")
