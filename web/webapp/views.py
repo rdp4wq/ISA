@@ -1,13 +1,11 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, render_to_response
-from django.template import RequestContext
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
-from django.core.urlresolvers import reverse
-import requests
 import json
+
+import requests
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
 from web.settings import SERVICES_URL
-from web.forms import LoginForm, RegisterForm
+from webapp.forms import LoginForm, RegisterForm
 
 
 # Create your views here.
