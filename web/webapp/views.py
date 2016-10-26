@@ -107,9 +107,6 @@ def login(request):
 @csrf_exempt
 # @require_POST
 def register(request):
-    auth = request.COOKIES.get('auth')
-    if auth:
-        return HttpResponseRedirect("/")
 
     if request.method == 'POST':
 
@@ -148,7 +145,7 @@ def logout(request):
 
     return response
 
-
+@csrf_exempt
 def create_date(request):
     auth = request.COOKIES.get('auth')
     if not auth:
