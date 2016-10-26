@@ -116,6 +116,9 @@ def register(request):
         form = RegisterForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
+            data = request.POST.copy()
+            if data['income'] == '':
+                data['income'] = None
 
 
             #####
@@ -124,7 +127,8 @@ def register(request):
             url = SERVICES_URL + 'api/v1/register/'
 
             #pass form data to services
-            r = requests.post(url, request.POST)
+            # r = requests.post(url, request.POST)
+            r = requests.post(url, data)
             jsonresponse = str(r.content, encoding='utf8')
             final_json = json.loads(jsonresponse)
 
