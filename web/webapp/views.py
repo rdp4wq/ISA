@@ -196,15 +196,13 @@ def create_date(request):
 
             #pass form data to services
             r = requests.post(url, data)
-            jsonresponse = str(r.content, encoding='utf8')
-            # final_json = json.loads(jsonresponse)
 
             return HttpResponse(r.content)
-            response = HttpResponseRedirect("/")
-            return response
+            # response = HttpResponseRedirect("/")
+            # return response
         else:
             return HttpResponse(form)
     else:
         form = DateForm()
 
-    return render(request, 'register.html', {'form': form, 'is_logged_in': False})
+    return render(request, 'create.html', {'form': form, 'is_logged_in': True})
