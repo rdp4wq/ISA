@@ -195,7 +195,7 @@ def create_date(request):
             url = SERVICES_URL + 'api/v1/dates/new/'
 
             #pass form data to services
-            r = requests.post(url, data)
+            r = requests.post(url, request.POST)
 
             return HttpResponse(r.content)
             # response = HttpResponseRedirect("/")

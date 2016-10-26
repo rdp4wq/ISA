@@ -110,8 +110,6 @@ def create_user(request):
 @csrf_exempt
 def create_date(request):
     url = ENTITIES_URL + 'api/v1/dates/'
-    data = request.POST.copy()
-    data['password'] = make_password(data['password'])
     r = requests.post(url, request.POST)
     jsonresponse = str(r.content, encoding='utf8')
     final_json = json.loads(jsonresponse)
