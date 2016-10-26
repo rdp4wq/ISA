@@ -54,6 +54,15 @@ class EntitiesTestCase(TestCase):
         response = self.client.get(reverse('dates-detail', kwargs={'pk':1}))
         self.assertContains(response, 'description')
 
+    #Use Case: not able to see a non-existent user
+    def test_no_user(self):
+        response = self.client.get(reverse('users-detail', kwargs={'pk':3}))
+        self.assertEqual(response.status_code, 404)
+
+    #Use Case: not able to see a non-existent date
+    def test_no_date(self):
+        response = self.client.get(reverse('dates-detail', kwargs={'pk':2}))
+        self.assertEqual(response.status_code, 404)
 
     # #Use Case: able to see a daddy
     # def test_daddy(self):
