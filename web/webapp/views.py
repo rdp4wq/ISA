@@ -105,7 +105,6 @@ def login(request):
 
 
 @csrf_exempt
-# @require_POST
 def register(request):
 
     if request.method == 'POST':
@@ -129,7 +128,7 @@ def register(request):
             jsonresponse = str(r.content, encoding='utf8')
             final_json = json.loads(jsonresponse)
 
-            # return HttpResponse(r.content)
+            return HttpResponse(r.content)
             response = HttpResponseRedirect("/")
             return response
     else:
@@ -145,18 +144,52 @@ def logout(request):
 
     return response
 
+# @csrf_exempt
+# def create_date(request):
+#     auth = request.COOKIES.get('auth')
+#     if not auth:
+#         return HttpResponseRedirect("/login")
+#
+#     if request.method == 'POST':
+#         form = DateForm(request.POST)
+#         # check whether it's valid:
+#         if form.is_valid():
+#             data = request.POST.copy()
+#             data['user'] = 3
+#
+#             #####
+#             #This endpoint should take in form-data with the fields 'username' and 'password'
+#             #####
+#             url = SERVICES_URL + 'api/v1/dates/new/'
+#
+#             #pass form data to services
+#
+#
+#             r = requests.post(url, data)
+#
+#             #get back stuff from services
+#             return HttpResponse(r.content)
+#             response = HttpResponseRedirect("/")
+#
+#             return response
+#     else:
+#         form = DateForm()
+#         return render(request, 'create.html', {'form': form, 'is_logged_in': True})
+
 @csrf_exempt
 def create_date(request):
     auth = request.COOKIES.get('auth')
     if not auth:
         return HttpResponseRedirect("/login")
-
     if request.method == 'POST':
+
         form = DateForm(request.POST)
         # check whether it's valid:
+
         if form.is_valid():
             data = request.POST.copy()
-            data['user'] = 3
+            data['user'] = 10
+
 
             #####
             #This endpoint should take in form-data with the fields 'username' and 'password'
@@ -164,16 +197,19 @@ def create_date(request):
             url = SERVICES_URL + 'api/v1/dates/new/'
 
             #pass form data to services
-            requests.post(url, data)
+            r = requests.post(url, data)
+            jsonresponse = str(r.content, encoding='utf8')
+            # final_json = json.loads(jsonresponse)
 
-            #get back stuff from services
-
+            return HttpResponse(r.content)
             response = HttpResponseRedirect("/")
-
             return response
+        else:
+            return HttpResponse(form)
     else:
         form = DateForm()
 
-    return render(request, 'create.html', {'form': form, 'is_logged_in': True})
+    return render(request, 'register.html', {'form': form, 'is_logged_in': False})
+
 
 #if not auth create boolean stores true and false, pass in dict to pages
