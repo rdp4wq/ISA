@@ -83,12 +83,12 @@ def get_daddy_from_models(request, pk):
     return JsonResponse(daddy_json, content_type='application/json')
 
 
-@csrf_exempt
-def create_date(request):
-    url = ENTITIES_URL + 'api/v1/dates/'
-    r = requests.post(url, request.POST)
-
-    return JsonResponse(r.json())
+# @csrf_exempt
+# def create_date(request):
+#     url = ENTITIES_URL + 'api/v1/dates/'
+#     r = requests.post(url, request.POST)
+#
+#     return JsonResponse(r.json())
 
 
 def get_dates(request):
@@ -107,6 +107,15 @@ def create_user(request):
     final_json = json.loads(jsonresponse)
     return JsonResponse(final_json, content_type='application/json')
 
+@csrf_exempt
+def create_date(request):
+    url = ENTITIES_URL + 'api/v1/dates/'
+    data = request.POST.copy()
+    data['password'] = make_password(data['password'])
+    r = requests.post(url, request.POST)
+    jsonresponse = str(r.content, encoding='utf8')
+    final_json = json.loads(jsonresponse)
+    return JsonResponse(final_json, content_type='application/json')
 
 
 @csrf_exempt
