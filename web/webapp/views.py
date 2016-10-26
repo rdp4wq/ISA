@@ -3,7 +3,7 @@ import json
 import requests
 from django.shortcuts import render
 from django.http import Http404, HttpResponse, HttpResponseRedirect
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 from web.settings import SERVICES_URL
 from webapp.forms import LoginForm, RegisterForm, DateForm
@@ -124,10 +124,7 @@ def register(request):
             url = SERVICES_URL + 'api/v1/register/'
 
             #pass form data to services
-            # r = requests.post(url, request.POST)
-            r = requests.post(url, data)
-            jsonresponse = str(r.content, encoding='utf8')
-            final_json = json.loads(jsonresponse)
+            requests.post(url, data)
 
             # return HttpResponse(r.content)
             response = HttpResponseRedirect("/")
@@ -144,6 +141,7 @@ def logout(request):
     response.delete_cookie("auth")
 
     return response
+
 
 @csrf_exempt
 def create_date(request):

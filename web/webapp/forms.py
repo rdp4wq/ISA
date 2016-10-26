@@ -40,6 +40,19 @@ USER_TYPE = (
     ('Baby', 'Baby')
 )
 
+us_states = (
+    ('AL', 'Alabama'), ('AK', 'Alaska'), ('AZ', 'Arizona'), ('AR', 'Arkansas'), ('CA', 'California'),
+    ('CO', 'Colorado'), ('CT', 'Connecticut'), ('DE', 'Delaware'), ('DC', 'District of Columbia'),
+    ('FL', 'Florida'), ('GA', 'Georgia'), ('HI', 'Hawaii'), ('ID', 'Idaho'), ('IL', 'Illinois'), ('IN', 'Indiana'),
+    ('IA', 'Iowa'), ('KS', 'Kansas'), ('KY', 'Kentucky'), ('LA', 'Louisiana'), ('ME', 'Maine'), ('MD', 'Maryland'),
+    ('MA', 'Massachusetts'), ('MI', 'Michigan'), ('MN', 'Minnesota'), ('MS', 'Mississippi'), ('MO', 'Missouri'),
+    ('MT', 'Montana'), ('NE', 'Nebraska'), ('NV', 'Nevada'), ('NH', 'New Hampshire'), ('NJ', 'New Jersey'),
+    ('NM', 'New Mexico'), ('NY', 'New York'), ('NC', 'North Carolina'), ('ND', 'North Dakota'), ('OH', 'Ohio'),
+    ('OK', 'Oklahoma'), ('OR', 'Oregon'), ('PA', 'Pennsylvania'), ('RI', 'Rhode Island'), ('SC', 'South Carolina'),
+    ('SD', 'South Dakota'), ('TN', 'Tennessee'), ('TX', 'Texas'), ('UT', 'Utah'), ('VT', 'Vermont'),
+    ('VA', 'Virginia'), ('WA', 'Washington'), ('WV', 'West Virginia'), ('WI', 'Wisconsin'), ('WY', 'Wyoming')
+)
+
 class RegisterForm(forms.Form):
     first_name = forms.CharField(label='First Name', max_length=100, validators=[basicValidator])
     last_name = forms.CharField(label='Last Name', max_length=100, validators=[basicValidator])
@@ -48,7 +61,7 @@ class RegisterForm(forms.Form):
     password = forms.CharField(label='Password', max_length=100, validators=[passwordValidator], widget=PasswordInput())
     date_of_birth = forms.CharField(label="Date of Birth (YYYY-MM-DD)")
     city = forms.CharField(label='City', max_length=100, validators=[basicValidator])
-    state = forms.CharField(label='State', max_length=100, validators=[basicValidator])
+    state = forms.ChoiceField(label='State', choices=us_states)
     user_type = forms.ChoiceField(label='Are you a...', choices=USER_TYPE)
     income = forms.IntegerField(label='Income', required=False)
 
