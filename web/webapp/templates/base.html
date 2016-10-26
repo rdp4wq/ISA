@@ -39,9 +39,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             </div>
             <div class="header-left">
                 <ul>
-                    <li ><a href="/login"  >Sign In</a></li>
-                    <li><a  href="/register"  >Register</a></li>
-                    <li><a  href="/logout"  >Sign Out</a></li>
+                    {% if not is_logged_in %}
+                        <li ><a href="/login"  >Sign In</a></li>
+                        <li><a  href="/register"  >Register</a></li>
+                    {% endif %}
+                    {% if is_logged_in %}
+                        <li><a  href="/logout"  >Sign Out</a></li>
+                    {% endif %}
 
                 </ul>
                 <div class="cart box_1">
@@ -67,13 +71,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class=" h_menu4">
                 <ul class="memenu skyblue">
                     <li class="active grid"><a class="color8" href="/">Home</a></li>
-                    <li><a class="color1" href="/babies">Babies</a>
-                    </li>
-                    <li><a class="color2" href="/daddies">Daddies</a>
-                    </li>
-
-                    <li><a class="color3" href="/create">Create Date</a>
-                    </li>
+                    <li><a class="color1" href="/babies">Babies</a></li>
+{#                    <li><a class="color2" href="/daddies">Daddies</a></li>#}
+                    <li><a class="color3" href="/create">Create Date</a></li>
                     <li><a class="color6" href="/contact">Contact</a></li>
                 </ul>
             </div>

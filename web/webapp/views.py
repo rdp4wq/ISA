@@ -2,7 +2,7 @@ import json
 
 import requests
 from django.shortcuts import render
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
 
 from web.settings import SERVICES_URL
@@ -12,46 +12,51 @@ from webapp.forms import LoginForm, RegisterForm, DateForm
 # Create your views here.
 def index(request):
     # request.session.set_test_cookie()
+    auth = request.COOKIES.get('auth')
+    is_logged_in = False
+    if auth:
+        is_logged_in = True
+    context = {'is_logged_in': is_logged_in}
 
-    return render(request, 'index.html')
+    return render(request, 'index.html', context)
 
 
-def daddies(request):
-    # Endpoint in Services container to return all daddies
-    url = SERVICES_URL + 'api/v1/services/daddies'
-    # Make GET request
-    daddies_json = requests.get(url)
-    # Make template context
-    context = {'daddies': daddies_json.content}
-    # Render template
-    return render(request, 'daddies.html', context)
+# def daddies(request):
+#     # Endpoint in Services container to return all daddies
+#     url = SERVICES_URL + 'api/v1/services/daddies'
+#     # Make GET request
+#     daddies_json = requests.get(url)
+#     # Make template context
+#     context = {'daddies': daddies_json.content}
+#     # Render template
+#     return render(request, 'daddies.html', context)
 
 
 def babies(request):
     auth = request.COOKIES.get('auth')
     if not auth:
-        return render(request, 'babies.html')
-    else:
-        # Endpoint in Services container to return all daddies
-        url = SERVICES_URL + 'api/v1/services/babies'
-        # Make GET request
-        babies_json = requests.get(url)
-        # Make template context
-        context = {'babies': babies_json.content}
-        # Render template
-        return render(request, 'babies.html', context)
+        return HttpResponseRedirect("/login/")
 
-
-def baby_detail(request, baby_id):
-    # Endpoint in Services container to return a single baby
-    url = SERVICES_URL + 'api/v1/services/babies/' + baby_id + '/'
+    # Endpoint in Services container to return all daddies
+    url = SERVICES_URL + 'api/v1/services/babies'
     # Make GET request
-    baby_json = requests.get(url)
-    # Convert json into dict, make template context
-    baby = baby_json.content.decode()
-    context = json.loads(baby)
+    babies_json = requests.get(url)
+    # Make template context
+    context = {'babies': babies_json.content}
     # Render template
-    return render(request, 'baby.html', context)
+    return render(request, 'babies.html', context)
+
+
+# def baby_detail(request, baby_id):
+#     # Endpoint in Services container to return a single baby
+#     url = SERVICES_URL + 'api/v1/services/babies/' + baby_id + '/'
+#     # Make GET request
+#     baby_json = requests.get(url)
+#     # Convert json into dict, make template context
+#     baby = baby_json.content.decode()
+#     context = json.loads(baby)
+#     # Render template
+#     return render(request, 'baby.html', context)
 
 
 def search(request):
@@ -61,6 +66,7 @@ def search(request):
 @csrf_exempt
 # @require_POST
 def login(request):
+
     if request.method == 'POST':
         form = LoginForm(request.POST)
         # check whether it's valid:
@@ -76,7 +82,7 @@ def login(request):
 
             #get back stuff from services
 
-            response = render(request, "index.html")
+            response = HttpResponseRedirect("/")
 
             try:
                 jsonresponse = str(r.content, encoding='utf8')
@@ -86,18 +92,22 @@ def login(request):
                 response.set_cookie("auth", final_json['authenticator'])
                 response.set_cookie("user", final_json['user'])
             except ValueError:  # includes simplejson.decoder.JSONDecodeError
-                raise Http404('Invalid login')
+                return render(request, 'login.html', {'form': form, 'error': "Invalid login"})
 
             return response
     else:
         form = LoginForm()
 
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html', {'form': form, 'error': ""})
 
 
 @csrf_exempt
 # @require_POST
 def register(request):
+    auth = request.COOKIES.get('auth')
+    if auth:
+        return HttpResponseRedirect("/")
+
     if request.method == 'POST':
 
         form = RegisterForm(request.POST)
@@ -116,7 +126,7 @@ def register(request):
             final_json = json.loads(jsonresponse)
 
             # return HttpResponse(r.content)
-            response = render(request, "index.html")
+            response = HttpResponseRedirect("/")
             return response
     if request.method == 'GET':
         form = RegisterForm()
@@ -124,22 +134,28 @@ def register(request):
 
 
 def logout(request):
-    response = render(request, "index.html")
+
+    response = HttpResponseRedirect("/")
     response.delete_cookie("auth")
 
     return response
 
 
 def create_date(request):
-    user = request.COOKIES.get('user')
+    auth = request.COOKIES.get('auth')
+    if not auth:
+        return HttpResponseRedirect("/login")
 
     if request.method == 'POST':
         form = DateForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            date = form.save(commit=False)
-            date.user = user
-            date.save()
+            user = request.COOKIES.get('user')
+            price = form.cleaned_data['price']
+            description = form.cleaned_data['description']
+
+            post_data = {'user': user, 'description': description, 'price': price}
+            json_post = {'data':post_data}
 
             #####
             #This endpoint should take in form-data with the fields 'username' and 'password'
@@ -147,14 +163,16 @@ def create_date(request):
             url = SERVICES_URL + 'api/v1/dates/new/'
 
             #pass form data to services
-            requests.post(url, request.POST)
+            requests.post(url, json_post)
 
             #get back stuff from services
 
-            response = render(request, "index.html")
+            response = HttpResponseRedirect("/")
 
             return response
     else:
         form = DateForm()
 
-    return render(request, 'create.html', {'form': form})
+    return render(request, 'create.html', {'form': form, 'is_logged_in': True})
+
+#if not auth create boolean stores true and false, pass in dict to pages

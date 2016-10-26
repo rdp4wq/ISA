@@ -48,6 +48,5 @@ class RegisterForm(forms.Form):
     income = forms.IntegerField(label='Income', initial=0)
 
 class DateForm(forms.Form):
-    user = forms.IntegerField(required=False)
     price = forms.IntegerField(label='Price')
     description = forms.CharField(label='Description')
