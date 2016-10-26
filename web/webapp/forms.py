@@ -66,6 +66,6 @@ class RegisterForm(forms.Form):
     income = forms.IntegerField(label='Income', required=False)
 
 class DateForm(forms.Form):
-    user = forms.IntegerField(initial=3, required=False)
+    user = forms.IntegerField(label='', initial=0, required=False, widget=forms.HiddenInput())
     price = forms.IntegerField(label='Price')
     description = forms.CharField(label='Description')

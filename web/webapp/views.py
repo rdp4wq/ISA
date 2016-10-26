@@ -32,19 +32,20 @@ def index(request):
 #     return render(request, 'daddies.html', context)
 
 
-def babies(request):
-    auth = request.COOKIES.get('auth')
-    if not auth:
-        return HttpResponseRedirect("/login/")
+# def babies(request):
+#     auth = request.COOKIES.get('auth')
+#     if not auth:
+#         return HttpResponseRedirect("/login/")
+#
+#     # Endpoint in Services container to return all daddies
+#     url = SERVICES_URL + 'api/v1/services/babies'
+#     # Make GET request
+#     babies_json = requests.get(url)
+#     # Make template context
+#     context = {'babies': babies_json.content}
+#     # Render template
+#     return render(request, 'babies.html', context)
 
-    # Endpoint in Services container to return all daddies
-    url = SERVICES_URL + 'api/v1/services/babies'
-    # Make GET request
-    babies_json = requests.get(url)
-    # Make template context
-    context = {'babies': babies_json.content}
-    # Render template
-    return render(request, 'babies.html', context)
 
 
 # def baby_detail(request, baby_id):
@@ -58,6 +59,24 @@ def babies(request):
 #     # Render template
 #     return render(request, 'baby.html', context)
 
+
+def dates(request):
+    auth = request.COOKIES.get('auth')
+    if not auth:
+        return HttpResponseRedirect("/login/")
+
+    # Endpoint in Services container to return all daddies
+    url = SERVICES_URL + 'api/v1/dates/'
+
+
+    # Make GET request
+    dates_json = requests.get(url)
+    decoded_dates = dates_json.content.decode()
+    dates = json.loads(decoded_dates)
+    # Make template context
+    context = {'results': dates['result'], 'is_logged_in': True}
+    # Render template
+    return render(request, 'dates.html', context)
 
 def search(request):
     return render(request, 'search.html')
@@ -142,38 +161,6 @@ def logout(request):
     return response
 
 
-# @csrf_exempt
-# def create_date(request):
-#     auth = request.COOKIES.get('auth')
-#     if not auth:
-#         return HttpResponseRedirect("/login")
-#
-#     if request.method == 'POST':
-#         form = DateForm(request.POST)
-#         # check whether it's valid:
-#         if form.is_valid():
-#             data = request.POST.copy()
-#             data['user'] = 3
-#
-#             #####
-#             #This endpoint should take in form-data with the fields 'username' and 'password'
-#             #####
-#             url = SERVICES_URL + 'api/v1/dates/new/'
-#
-#             #pass form data to services
-#
-#
-#             r = requests.post(url, data)
-#
-#             #get back stuff from services
-#             return HttpResponse(r.content)
-#             response = HttpResponseRedirect("/")
-#
-#             return response
-#     else:
-#         form = DateForm()
-#         return render(request, 'create.html', {'form': form, 'is_logged_in': True})
-
 @csrf_exempt
 def create_date(request):
     auth = request.COOKIES.get('auth')
@@ -186,7 +173,7 @@ def create_date(request):
 
         if form.is_valid():
             data = request.POST.copy()
-            data['user'] = 10
+            data['user'] = request.COOKIES.get('user')
 
 
             #####
@@ -195,11 +182,11 @@ def create_date(request):
             url = SERVICES_URL + 'api/v1/dates/new/'
 
             #pass form data to services
-            r = requests.post(url, request.POST)
+            requests.post(url, data)
 
-            return HttpResponse(r.content)
-            # response = HttpResponseRedirect("/")
-            # return response
+            # return HttpResponse(r.content)
+            response = HttpResponseRedirect("/")
+            return response
         else:
             return HttpResponse(form)
     else:

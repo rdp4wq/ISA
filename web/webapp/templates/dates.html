@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load static %}
+
+{% block body_block %}
+
+    <h1>Dates</h1>
+    <br/>
+    <a class="btn btn-primary" href="/create">Post a date</a>
+    <br/><br/>
+{#    {{ results }}#}
+    {% for result in results %}
+        A date with {{ result.user }}
+        <br/>
+        {{ result.description }}
+        <br/>
+        ${{ result.price }}
+        <br/><br/>
+
+    {% endfor %}
+
+
+{% endblock %}
