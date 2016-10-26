@@ -4,7 +4,7 @@ from django.forms import PasswordInput, extras
 from django.core.validators import RegexValidator
 
 basicValidator = RegexValidator(
-    regex='^[a-zA-Z]*$',
+    regex='^[ a-zA-Z]*$',
     message='Input must only contain a-z, A-Z',
     code='invalid_input'
 )
@@ -23,6 +23,11 @@ emailValidator = RegexValidator(
     message='Invalid Email',
     code='invalid_email'
 )
+# dobValidator = RegexValidator(
+#     regex='^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])+$',
+#     message='Please enter YYYY-MM-DD',
+#     code='invalid_DOB'
+# )
 
 
 class LoginForm(forms.Form):
@@ -41,12 +46,13 @@ class RegisterForm(forms.Form):
     email = forms.CharField(label='Email', max_length=100, validators=[emailValidator])
     username = forms.CharField(label='Username', max_length=100, validators=[usernameValidator])
     password = forms.CharField(label='Password', max_length=100, validators=[passwordValidator], widget=PasswordInput())
-    date_of_birth = forms.CharField(label="date")
+    date_of_birth = forms.CharField(label="Date of Birth (YYYY-MM-DD)")
     city = forms.CharField(label='City', max_length=100, validators=[basicValidator])
     state = forms.CharField(label='State', max_length=100, validators=[basicValidator])
     user_type = forms.ChoiceField(label='Are you a...', choices=USER_TYPE)
-    income = forms.IntegerField(label='Income', initial=0)
+    income = forms.IntegerField(label='Income', required=False)
 
 class DateForm(forms.Form):
+    user = forms.IntegerField(initial=0, required=False)
     price = forms.IntegerField(label='Price')
     description = forms.CharField(label='Description')

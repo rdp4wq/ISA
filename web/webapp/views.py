@@ -66,6 +66,9 @@ def search(request):
 @csrf_exempt
 # @require_POST
 def login(request):
+    auth = request.COOKIES.get('auth')
+    if auth:
+        return HttpResponseRedirect("/")
 
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -98,7 +101,7 @@ def login(request):
     else:
         form = LoginForm()
 
-    return render(request, 'login.html', {'form': form, 'error': ""})
+    return render(request, 'login.html', {'form': form, 'error': "", 'is_logged_in': False})
 
 
 @csrf_exempt
@@ -128,9 +131,10 @@ def register(request):
             # return HttpResponse(r.content)
             response = HttpResponseRedirect("/")
             return response
-    if request.method == 'GET':
+    else:
         form = RegisterForm()
-        return render(request, 'register.html', {'form': form})
+
+    return render(request, 'register.html', {'form': form, 'is_logged_in': False})
 
 
 def logout(request):
@@ -150,12 +154,8 @@ def create_date(request):
         form = DateForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            user = request.COOKIES.get('user')
-            price = form.cleaned_data['price']
-            description = form.cleaned_data['description']
-
-            post_data = {'user': user, 'description': description, 'price': price}
-            json_post = {'data':post_data}
+            data = request.POST.copy()
+            data['user'] = 3
 
             #####
             #This endpoint should take in form-data with the fields 'username' and 'password'
@@ -163,7 +163,7 @@ def create_date(request):
             url = SERVICES_URL + 'api/v1/dates/new/'
 
             #pass form data to services
-            requests.post(url, json_post)
+            requests.post(url, data)
 
             #get back stuff from services
 
