@@ -9,6 +9,8 @@ import json
 from services.settings import ENTITIES_URL, SECRET_KEY
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+from elasticsearch import Elasticsearch
+from kafka import KafkaProducer
 
 
 def get_users_from_models(request):
@@ -113,6 +115,8 @@ def create_date(request):
     r = requests.post(url, request.POST)
     jsonresponse = str(r.content, encoding='utf8')
     final_json = json.loads(jsonresponse)
+    kp = KafkaProducer(bootstrap_servers='kafka:9092')
+    kp.send('new-listings-topic', json.dumps(final_json).encode('utf-8'))
     return JsonResponse(final_json, content_type='application/json')
 
 
@@ -153,3 +157,13 @@ def login(request):
     auth_json = r.json()
 
     return JsonResponse(auth_json, content_type='application/json')
+
+
+@csrf_exempt
+def search(request):
+    es = Elasticsearch(['es'])
+    results = es.search(index='listing_index', body={'query': {'query_string': {'query': request.GET['search']}}, 'size': 10})
+    search_results = {
+        'result': [hit['_source'] for hit in results['hits']['hits']],
+    }
+    return JsonResponse(search_results)
