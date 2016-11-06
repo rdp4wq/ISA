@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpResponse
 from django.utils.http import urlquote
 from django.contrib.auth.hashers import check_password, make_password
 import requests
@@ -97,6 +97,16 @@ def get_dates(request):
     url = ENTITIES_URL + 'api/v1/dates/'
     r = requests.get(url)
     return JsonResponse(r.json(), content_type='application/json')
+
+def index_dates_at_startup(request):
+    kp = KafkaProducer(bootstrap_servers='kafka:9092')
+
+    url = ENTITIES_URL + 'api/v1/dates/'
+    r = requests.get(url)
+    body_data = json.loads(r.content.decode('utf8'))
+    for date in body_data['result']:
+        kp.send('new-listings-topic', json.dumps(date).encode('utf-8'))
+
 
 
 @csrf_exempt
