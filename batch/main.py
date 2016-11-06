@@ -5,11 +5,13 @@ import json
 
 
 es = Elasticsearch(['es'])
-try:
-    kc = KafkaConsumer('new-listings-topic', group_id='listing-indexer', bootstrap_servers=['kafka:9092'])
-except:
-    time.sleep(30)
-    kc = KafkaConsumer('new-listings-topic', group_id='listing-indexer', bootstrap_servers=['kafka:9092'])
+kc = None
+
+while kc is None:
+    try:
+        kc = KafkaConsumer('new-listings-topic', group_id='listing-indexer', bootstrap_servers=['kafka:9092'])
+    except:
+        time.sleep(5)
 
 for msg in kc:
     msg_json = json.loads(msg.value.decode('utf-8'))
