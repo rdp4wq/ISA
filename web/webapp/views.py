@@ -64,19 +64,22 @@ def dates(request):
     auth = request.COOKIES.get('auth')
     if not auth:
         return HttpResponseRedirect("/login/")
+    authenticated = authenticate(request)
+    if authenticated == True:
+        # Endpoint in Services container to return all daddies
+        url = SERVICES_URL + 'api/v1/dates/'
 
-    # Endpoint in Services container to return all daddies
-    url = SERVICES_URL + 'api/v1/dates/'
 
-
-    # Make GET request
-    dates_json = requests.get(url)
-    decoded_dates = dates_json.content.decode()
-    dates = json.loads(decoded_dates)
-    # Make template context
-    context = {'results': dates['result'], 'is_logged_in': True}
-    # Render template
-    return render(request, 'dates.html', context)
+        # Make GET request
+        dates_json = requests.get(url)
+        decoded_dates = dates_json.content.decode()
+        dates = json.loads(decoded_dates)
+        # Make template context
+        context = {'results': dates['result'], 'is_logged_in': True}
+        # Render template
+        return render(request, 'dates.html', context)
+    else:
+        return HttpResponseRedirect("/login/")
 
 def search(request):
     return render(request, 'search.html')
@@ -144,7 +147,6 @@ def register(request):
             #pass form data to services
             requests.post(url, data)
 
-            return HttpResponse(r.content)
             response = HttpResponseRedirect("/")
             return response
     else:
@@ -166,30 +168,48 @@ def create_date(request):
     auth = request.COOKIES.get('auth')
     if not auth:
         return HttpResponseRedirect("/login")
-    if request.method == 'POST':
 
-        form = DateForm(request.POST)
-        # check whether it's valid:
+    authenticated = authenticate(request)
+    if authenticated == True:
+        if request.method == 'POST':
 
-        if form.is_valid():
-            data = request.POST.copy()
-            data['user'] = request.COOKIES.get('user')
+            form = DateForm(request.POST)
+            # check whether it's valid:
+
+            if form.is_valid():
+                data = request.POST.copy()
+                data['user'] = request.COOKIES.get('user')
 
 
-            #####
-            #This endpoint should take in form-data with the fields 'username' and 'password'
-            #####
-            url = SERVICES_URL + 'api/v1/dates/new/'
+                #####
+                #This endpoint should take in form-data with the fields 'username' and 'password'
+                #####
+                url = SERVICES_URL + 'api/v1/dates/new/'
 
-            #pass form data to services
-            requests.post(url, data)
+                #pass form data to services
+                requests.post(url, data)
 
-            # return HttpResponse(r.content)
-            response = HttpResponseRedirect("/")
-            return response
+                # return HttpResponse(r.content)
+                response = HttpResponseRedirect("/")
+                return response
+            else:
+                return HttpResponse(form)
         else:
-            return HttpResponse(form)
-    else:
-        form = DateForm()
+            form = DateForm()
 
-    return render(request, 'create.html', {'form': form, 'is_logged_in': True})
+        return render(request, 'create.html', {'form': form, 'is_logged_in': True})
+    else:
+        return HttpResponseRedirect("/login/")
+
+
+@csrf_exempt
+def authenticate(request):
+    data = request.POST.copy()
+    data['authenticator'] = request.COOKIES.get('auth')
+
+    url = SERVICES_URL + 'api/v1/authenticate/'
+
+    #pass form data to services
+    r = requests.post(url, data)
+    body_data = json.loads(r.content.decode('utf8'))
+    return body_data['result']
