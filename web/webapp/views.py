@@ -104,7 +104,8 @@ def search(request):
 
         return render(request, 'search.html', {'form': form, 'error': "", 'is_logged_in': True})
     else:
-            return HttpResponseRedirect("/login/")
+        form = SearchForm()
+    return render(request, 'search.html', {'form': form, 'results': 'NULL', 'error': "", 'is_logged_in': True})
 
 @csrf_exempt
 # @require_POST
