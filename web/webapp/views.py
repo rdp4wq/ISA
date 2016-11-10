@@ -86,23 +86,25 @@ def search(request):
     auth = request.COOKIES.get('auth')
     if not auth:
         return HttpResponseRedirect("/login")
+    authenticated = authenticate(request)
+    if authenticated == True:
+        if request.method == 'POST':
+            form = SearchForm(request.POST)
+            if form.is_valid():
+                url = SERVICES_URL + 'api/v1/search/?search=' + request.POST.get('search')
+                r = requests.post(url)
 
-    if request.method == 'POST':
-        form = SearchForm(request.POST)
-        if form.is_valid():
-            url = SERVICES_URL + 'api/v1/search/?search=' + request.POST.get('search')
-            r = requests.post(url)
+                jsonresponse = r.content.decode('utf8')
+                final_json = json.loads(jsonresponse)
+                context = {'form': form, 'results': final_json['result'], 'is_logged_in': True}
+                return render(request, 'search.html', context)
 
-            jsonresponse = r.content.decode('utf8')
-            final_json = json.loads(jsonresponse)
-            context = {'form': form, 'results': final_json['result'], 'is_logged_in': True}
-            return render(request, 'search.html', context)
+        else:
+            form = SearchForm()
 
+        return render(request, 'search.html', {'form': form, 'error': "", 'is_logged_in': True})
     else:
-        form = SearchForm()
-
-    return render(request, 'search.html', {'form': form, 'error': "", 'is_logged_in': True})
-
+            return HttpResponseRedirect("/login/")
 
 @csrf_exempt
 # @require_POST
