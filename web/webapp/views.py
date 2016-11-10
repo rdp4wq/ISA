@@ -6,7 +6,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 from web.settings import SERVICES_URL
-from webapp.forms import LoginForm, RegisterForm, DateForm
+from webapp.forms import LoginForm, RegisterForm, DateForm, SearchForm
 
 
 # Create your views here.
@@ -128,7 +128,6 @@ def login(request):
 
 @csrf_exempt
 def register(request):
-
     if request.method == 'POST':
 
         form = RegisterForm(request.POST)
