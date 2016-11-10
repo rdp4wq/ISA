@@ -101,7 +101,7 @@ def search(request):
     else:
         form = SearchForm()
 
-    return render(request, 'search.html', {'form': form, 'error': "", 'is_logged_in': True})
+    return render(request, 'search.html', {'form': form, 'results': 'NULL', 'error': "", 'is_logged_in': True})
 
 
 @csrf_exempt

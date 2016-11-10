@@ -19,11 +19,24 @@
         <input type="submit" value="Submit" />
     </form>
 
-    {% if results %}
-        {% for result in results %}
-            {{ result }}
-        {% endfor %}
+    {% if results != "NULL" %}
+        {% if results %}
+            <br/>
+            {% for result in results %}
+                A date with {{ result.user }}
+                <br/>
+                {{ result.description }}
+                <br/>
+                ${{ result.price }}
+                <br/><br/>
+
+            {% endfor %}
+        {% else %}
+            <br/>
+            No results found!
+        {% endif %}
     {% endif %}
+
 
 
 
