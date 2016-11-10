@@ -82,7 +82,27 @@ def dates(request):
         return HttpResponseRedirect("/login/")
 
 def search(request):
-    return render(request, 'search.html')
+    # auth = request.COOKIES.get('auth')
+    # if not auth:
+    #     return HttpResponseRedirect("/login")
+
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            url = SERVICES_URL + 'api/v1/search/'
+            r = requests.post(url, request.POST)
+            try:
+                jsonresponse = str(r.content, encoding='utf8')
+                final_json = json.loads(jsonresponse)
+                context = {'form': form, 'results': final_json['result'], 'is_logged_in': True}
+                return render(request, 'search.html', context)
+
+            except ValueError:  # includes simplejson.decoder.JSONDecodeError
+                return render(request, 'login.html', {'form': form, 'error': "Invalid login"})
+    else:
+        form = SearchForm()
+
+    return render(request, 'search.html', {'form': form, 'error': "", 'is_logged_in': True})
 
 
 @csrf_exempt
