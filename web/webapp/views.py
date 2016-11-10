@@ -90,8 +90,8 @@ def search(request):
     if request.method == 'POST':
         form = SearchForm(request.POST)
         if form.is_valid():
-            url = SERVICES_URL + 'api/v1/search/'
-            r = requests.post(url, request.POST)
+            url = SERVICES_URL + 'api/v1/search/?search=' + request.POST.get('search')
+            r = requests.post(url)
 
             jsonresponse = r.content.decode('utf8')
             final_json = json.loads(jsonresponse)
