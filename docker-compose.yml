@@ -56,3 +56,14 @@ batch:
     volumes:
        - ./batch:/app/batch
     command: bash -c "python /app/batch/main.py"
+
+selenium:
+    image: tp33/django
+    container_name: selenium
+    links:
+        - web
+    ports:
+        - "4444:4444"
+    volumes:
+       - ./selenium:/app/selenium
+    command: bash -c "pip install selenium && python /app/selenium/main.py"
