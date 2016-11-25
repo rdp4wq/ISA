@@ -58,12 +58,18 @@ batch:
     command: bash -c "python /app/batch/main.py"
 
 selenium:
-    image: tp33/django
-    container_name: selenium
+    image: selenium/standalone-chrome
+    container_name: selenium-chrome-standalone
     links:
         - web
     ports:
         - "4444:4444"
+
+selenium-main:
+    image: tp33/django
+    container_name: selenium-main
+    links:
+       - selenium 
     volumes:
        - ./selenium:/app/selenium
     command: bash -c "pip install selenium && python /app/selenium/main.py"
