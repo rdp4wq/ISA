@@ -3,7 +3,9 @@ from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 from django.test import TestCase, Client
-#
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+
 # capabilities = DesiredCapabilities.CHROME
 # browser = webdriver.Remote(command_executor='http://192.168.99.100:4444/wd/hub', desired_capabilities=capabilities)
 # browser.get("http://www.python.org")
@@ -47,18 +49,22 @@ class WebTestCase(TestCase):
         print(title)
         self.assertIn('SugarSugar', title)
 
-    # Test correct website
-    def test_sugar_url(self):
+    # Test login
+    def test_login(self):
         capabilities = DesiredCapabilities.CHROME
 
         browser = webdriver.Remote(command_executor='http://192.168.99.100:4444/wd/hub', desired_capabilities=capabilities)
 
         print("Made it to test")
         browser.get("http://192.168.99.100:8001/")
-        title = str(browser.title)
-        print(title)
+
+        browser.find_element_by_class_name('btn btn-info').click()
+        username_entry = browser.find_element_by_id('id_username')
+        password_entry= browser.find_element_by_id('id_password')
+        username_entry.send_keys('')
+        password_entry.send_keys('1')
         self.assertIn('SugarSugar', title)
 
-    
+
     def tearDown(self):
         pass
