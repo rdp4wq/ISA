@@ -1,6 +1,6 @@
 entities:
     build: ./
-    container_name: sugar_entities
+    container_name: sugar-entities
     external_links:
       -  mysql:db
     volumes:
@@ -11,7 +11,7 @@ entities:
 
 services:
     build: ./
-    container_name: sugar_services
+    container_name: sugar-services
     links:
        - entities
        - kafka
@@ -24,7 +24,7 @@ services:
 
 web:
     build: ./
-    container_name: sugar_web
+    container_name: sugar-web
     links:
        - services
     volumes:
@@ -71,5 +71,5 @@ selenium-main:
     links:
        - selenium 
     volumes:
-       - ./selenium:/app/selenium
-    command: bash -c "pip install selenium && python /app/selenium/main.py"
+       - ./selenium_tests:/app/selenium_tests
+    command: bash -c "pip install selenium && python /app/selenium_tests/manage.py test front_end_tests"

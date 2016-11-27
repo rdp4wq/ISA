@@ -115,5 +115,5 @@ STATICFILES_DIRS = [
 ]
 
 # URLS
-SERVICES_URL = 'http://sugar_services:8000/'
+SERVICES_URL = 'http://sugar-services:8000/'
 
