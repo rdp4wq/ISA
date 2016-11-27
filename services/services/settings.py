@@ -105,4 +105,4 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 #URL
-ENTITIES_URL = 'http://sugar_entities:8000/'
+ENTITIES_URL = 'http://sugar-entities:8000/'

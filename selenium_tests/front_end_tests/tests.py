@@ -58,13 +58,16 @@ class WebTestCase(TestCase):
         print("Made it to test")
         browser.get("http://192.168.99.100:8001/")
 
-        browser.find_element_by_class_name('btn btn-info').click()
+        browser.find_element_by_xpath('//a[@class = "btn btn-info"]').click()
         username_entry = browser.find_element_by_id('id_username')
         password_entry= browser.find_element_by_id('id_password')
-        username_entry.send_keys('')
-        password_entry.send_keys('1')
-        self.assertIn('SugarSugar', title)
+        username_entry.send_keys('Pat')
+        password_entry.send_keys('password')
+        browser.find_element_by_xpath('//input[@value = "Submit"]').click()
 
+        logout = browser.find_element_by_xpath('//a[@href="/logout"]')
+        self.assertNotEquals(logout, None)
 
+    
     def tearDown(self):
         pass
