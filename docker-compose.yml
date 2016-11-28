@@ -1,36 +1,59 @@
-entities:
+entities1:
     build: ./
-    container_name: sugar-entities
+    container_name: sugar-entities1
     external_links:
       -  mysql:db
     volumes:
       - ./entities:/app/entities
-    ports:
-      - "8003:8000"
     command: bash -c "python /app/entities/manage.py makemigrations && python /app/entities/manage.py migrate --noinput && python /app/entities/manage.py loaddata db.json && mod_wsgi-express start-server --working-directory /app/entities --reload-on-changes /app/entities/entities/wsgi.py"
 
-services:
+entities2:
     build: ./
-    container_name: sugar-services
+    container_name: sugar-entities2
+    external_links:
+      -  mysql:db
+    volumes:
+      - ./entities:/app/entities
+    command: bash -c "python /app/entities/manage.py makemigrations && python /app/entities/manage.py migrate --noinput && python /app/entities/manage.py loaddata db.json && mod_wsgi-express start-server --working-directory /app/entities --reload-on-changes /app/entities/entities/wsgi.py"
+
+services1:
+    build: ./
+    container_name: sugar-services1
     links:
-       - entities
+       - entities-load-balancer
        - kafka
        - es
     volumes:
        - ./services:/app/services
-    ports:
-       - "8002:8000"
     command: bash -c "pip install requests && mod_wsgi-express start-server --working-directory /app/services --reload-on-changes /app/services/services/wsgi.py"
 
-web:
+services2:
     build: ./
-    container_name: sugar-web
+    container_name: sugar-services2
     links:
-       - services
+       - entities-load-balancer
+       - kafka
+       - es
+    volumes:
+       - ./services:/app/services
+    command: bash -c "pip install requests && mod_wsgi-express start-server --working-directory /app/services --reload-on-changes /app/services/services/wsgi.py"
+
+web1:
+    build: ./
+    container_name: sugar-web1
+    links:
+       - services-load-balancer
     volumes:
        - ./web:/app/web
-    ports:
-       - "8001:8000"
+    command: bash -c "pip install requests && mod_wsgi-express start-server --url-alias /static /app/web/webapp/static --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
+
+web2:
+    build: ./
+    container_name: sugar-web2
+    links:
+       - services-load-balancer
+    volumes:
+       - ./web:/app/web
     command: bash -c "pip install requests && mod_wsgi-express start-server --url-alias /static /app/web/webapp/static --working-directory /app/web --reload-on-changes /app/web/web/wsgi.py"
 
 kafka:
@@ -61,7 +84,7 @@ selenium:
     image: selenium/standalone-chrome
     container_name: selenium-chrome-standalone
     links:
-        - web
+        - web1
     ports:
         - "4444:4444"
 
@@ -69,7 +92,37 @@ selenium-main:
     image: tp33/django
     container_name: selenium-main
     links:
-       - selenium 
+       - selenium
     volumes:
        - ./selenium_tests:/app/selenium_tests
     command: bash -c "pip install selenium && python /app/selenium_tests/manage.py test front_end_tests"
+
+web-load-balancer:
+    image: galexrt/pen
+    container_name: sugar-web
+    links:
+       - web1
+       - web2
+    ports:
+       - "8001:8000"
+    command: 8000 sugar-web1:8000 sugar-web2:8000
+
+services-load-balancer:
+    image: galexrt/pen
+    container_name: sugar-services
+    links:
+       - services1
+       - services2
+    ports:
+       - "8002:8000"
+    command: 8000 sugar-services1:8000 sugar-services2:8000
+
+entities-load-balancer:
+    image: galexrt/pen
+    container_name: sugar-entities
+    links:
+       - entities1
+       - entities2
+    ports:
+       - "8003:8000"
+    command: 8000 sugar-entities1:8000 sugar-entities2:8000
