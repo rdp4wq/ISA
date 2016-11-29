@@ -32,8 +32,7 @@ before_script:
 script:
   - >
     docker exec -it sugar-entities bash -c
-    "pip install -r requirements.txt &&
-    cd entities &&
+    "cd entities &&
     python manage.py test --noinput"
 
 
