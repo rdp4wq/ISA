@@ -30,10 +30,11 @@ before_script:
   - docker ps -a
 
 script:
-  - docker exec -it sugar-entities bash
-  - pip install -r requirements.txt
-  - cd entities
-  - python manage.py test --noinput
+  - >
+  docker exec -it sugar-entities bash -c
+  "pip install -r requirements.txt &&
+  cd entities &&
+  python manage.py test --noinput"
 
 after_script:
   - docker-compose stop
