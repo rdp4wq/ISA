@@ -93,6 +93,10 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+WEB_URL = 'http://sugar-web:8000/'
+
+SELENIUM_URL = 'http://selenium-chrome-standalone:4444/'
+
 USE_L10N = True
 
 USE_TZ = True

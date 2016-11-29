@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 from django.test import TestCase, Client
+from selenium_tests.settings import WEB_URL, SELENIUM_URL
 # from selenium.webdriver.support.ui import WebDriverWait
 # from selenium.webdriver.support import expected_conditions as EC
 
@@ -26,10 +27,11 @@ from django.test import TestCase, Client
 class WebTestCase(TestCase):
     def setUp(self):
         pass
+
     def test_success_response(self):
         capabilities = DesiredCapabilities.CHROME
 
-        browser = webdriver.Remote(command_executor='http://192.168.99.100:4444/wd/hub', desired_capabilities=capabilities)
+        browser = webdriver.Remote(command_executor= SELENIUM_URL + 'wd/hub', desired_capabilities=capabilities)
 
         print("Made it to test")
         browser.get("http://www.python.org")
@@ -41,10 +43,10 @@ class WebTestCase(TestCase):
     def test_sugar_url(self):
         capabilities = DesiredCapabilities.CHROME
 
-        browser = webdriver.Remote(command_executor='http://192.168.99.100:4444/wd/hub', desired_capabilities=capabilities)
+        browser = webdriver.Remote(command_executor= SELENIUM_URL + 'wd/hub', desired_capabilities=capabilities)
 
         print("Made it to test")
-        browser.get("http://192.168.99.100:8001/")
+        browser.get(WEB_URL)
         title = str(browser.title)
         print(title)
         self.assertIn('SugarSugar', title)
@@ -53,10 +55,10 @@ class WebTestCase(TestCase):
     def test_login(self):
         capabilities = DesiredCapabilities.CHROME
 
-        browser = webdriver.Remote(command_executor='http://192.168.99.100:4444/wd/hub', desired_capabilities=capabilities)
+        browser = webdriver.Remote(command_executor=SELENIUM_URL + 'wd/hub', desired_capabilities=capabilities)
 
         print("Made it to test")
-        browser.get("http://192.168.99.100:8001/")
+        browser.get(WEB_URL)
 
         browser.find_element_by_xpath('//a[@class = "btn btn-info"]').click()
         username_entry = browser.find_element_by_id('id_username')

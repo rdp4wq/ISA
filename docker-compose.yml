@@ -84,7 +84,7 @@ selenium:
     image: selenium/standalone-chrome
     container_name: selenium-chrome-standalone
     links:
-        - web1
+        - web-load-balancer
     ports:
         - "4444:4444"
 
@@ -93,6 +93,7 @@ selenium-main:
     container_name: selenium-main
     links:
        - selenium
+       - web-load-balancer
     volumes:
        - ./selenium_tests:/app/selenium_tests
     command: bash -c "pip install selenium && python /app/selenium_tests/manage.py test front_end_tests"
@@ -105,7 +106,7 @@ web-load-balancer:
        - web2
     ports:
        - "8001:8000"
-    command: 8000 sugar-web1:8000 sugar-web2:8000
+    command: 8000 sugar-web1:8000 sugar-web2:8000 -r
 
 services-load-balancer:
     image: galexrt/pen
@@ -115,7 +116,7 @@ services-load-balancer:
        - services2
     ports:
        - "8002:8000"
-    command: 8000 sugar-services1:8000 sugar-services2:8000
+    command: 8000 sugar-services1:8000 sugar-services2:8000 -r
 
 entities-load-balancer:
     image: galexrt/pen
@@ -125,4 +126,4 @@ entities-load-balancer:
        - entities2
     ports:
        - "8003:8000"
-    command: 8000 sugar-entities1:8000 sugar-entities2:8000
+    command: 8000 sugar-entities1:8000 sugar-entities2:8000 -r
