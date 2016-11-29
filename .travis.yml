@@ -1,7 +1,26 @@
 language: python
+
 python:
   - "3.5"
+
+sudo: required
+
+services:
+  - docker
+
+env:
+  DOCKER_COMPOSE_VERSION: 1.4.2
+
+before_install:
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
 # command to install dependencies
-install: "pip install -r requirements.txt"
+install:
+  - pip install -r requirements.txt
+
 # command to run tests
-script: pytest
+script:
+  - python tests.py
