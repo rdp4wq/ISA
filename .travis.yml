@@ -32,7 +32,7 @@ before_script:
 script:
   - >
     docker exec -it sugar-entities bash -c
-    "cd entities &&
+    "ls &&
     python manage.py test --noinput"
 
 
