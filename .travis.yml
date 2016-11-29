@@ -30,11 +30,13 @@ before_script:
   - docker ps -a
 
 script:
-#  - >
-#    docker exec -it models bash -c     # 'models' is the name of the docker container
-#    "pip install -r requirements.txt &&
-#    python manage.py test --noinput" # run Django unit tests on models
-  # can put other tests (e.g. integrations) here too with exp, web containers
+  - >
+    docker exec -it sugar-entities bash -c
+#    'models' is the name of the docker container
+    "pip install -r requirements.txt &&
+    python manage.py test --noinput"
+#    run Django unit tests on models
+#   can put other tests (e.g. integrations) here too with exp, web containers
 
 after_script:
   - docker-compose stop
