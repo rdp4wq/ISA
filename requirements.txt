@@ -1,0 +1,6 @@
+Django==1.9
+mysql-connector-python-rf < 2.2
+kafka-python <= 1.0
+elasticsearch < 3.0
+Pillow < 3.1
+djangorestframework
