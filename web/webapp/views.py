@@ -158,22 +158,24 @@ def register(request):
             data = request.POST.copy()
             if data['income'] == '':
                 data['income'] = None
+            if not check_if_user_exists(request):
 
+                #####
+                #This endpoint should take in form-data with the fields 'username' and 'password'
+                #####
+                url = SERVICES_URL + 'api/v1/register/'
 
-            #####
-            #This endpoint should take in form-data with the fields 'username' and 'password'
-            #####
-            url = SERVICES_URL + 'api/v1/register/'
+                #pass form data to services
+                requests.post(url, data)
+                response = HttpResponseRedirect("/")
+                return response
+            else:
+                return render(request, 'register.html', {'form': form, 'is_logged_in': False, 'error': 'This username or email is already used'})
 
-            #pass form data to services
-            requests.post(url, data)
-
-            response = HttpResponseRedirect("/")
-            return response
     else:
         form = RegisterForm()
 
-    return render(request, 'register.html', {'form': form, 'is_logged_in': False})
+    return render(request, 'register.html', {'form': form, 'is_logged_in': False, 'error': ""})
 
 
 def logout(request):
@@ -234,3 +236,26 @@ def authenticate(request):
     r = requests.post(url, data)
     body_data = json.loads(r.content.decode('utf8'))
     return body_data['result']
+
+@csrf_exempt
+def check_if_user_exists(request):
+    url = SERVICES_URL + 'api/v1/services/users/'
+    data = request.POST.copy()
+    username = data['username']
+    email = data['email']
+
+    r = requests.post(url, data)
+
+    body_data = json.loads(r.content.decode('utf8'))
+    user_exists = False
+    for user in body_data['result']:
+        if user['username'] == username:
+            user_exists = True
+        if user['email'] == email:
+            user_exists = True
+    return user_exists
+
+
+
+    # return HttpResponse(data['email'])
+    # check_url = SERVICES_URL + 'api/v1/'

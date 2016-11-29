@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'login', views.login),
     url(r'logout', views.logout),
     url(r'register', views.register),
-    url(r'create', views.create_date)
+    url(r'create', views.create_date),
+    url(r'check', views.check_if_user_exists)
 ]

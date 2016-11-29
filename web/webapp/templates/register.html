@@ -4,9 +4,12 @@
 
 {% block body_block %}
 
-
     <form action="/register/" method="post" enctype="application/x-www-form-urlencoded">
         {% csrf_token %}
+        {% if error != "" %}
+            {{ error }}
+        {%  endif %}
+        <br/><br/>
         {% for field in form %}
             {{ field.label_tag }}
             <br/>
