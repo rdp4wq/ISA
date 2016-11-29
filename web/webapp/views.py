@@ -158,9 +158,7 @@ def register(request):
             data = request.POST.copy()
             if data['income'] == '':
                 data['income'] = None
-            user_exists = check_if_user_exists(request)
-
-            if user_exists == False:
+            if not check_if_user_exists(request):
 
                 #####
                 #This endpoint should take in form-data with the fields 'username' and 'password'
@@ -169,7 +167,6 @@ def register(request):
 
                 #pass form data to services
                 requests.post(url, data)
-
                 response = HttpResponseRedirect("/")
                 return response
             else:
@@ -256,7 +253,7 @@ def check_if_user_exists(request):
             user_exists = True
         if user['email'] == email:
             user_exists = True
-    return HttpResponse(user_exists)
+    return user_exists
 
 
 
