@@ -45,14 +45,14 @@ class EntitiesTestCase(TestCase):
         self.assertContains(response, '\"income\":null')
 
     #Use Case: able to see a date
-    def test_date_id(self):
-        response = self.client.get(reverse('dates-detail', kwargs={'pk':1}))
-        self.assertContains(response, 'id')
+    # def test_date_id(self):
+    #     response = self.client.get(reverse('dates-detail', kwargs={'pk':1}))
+    #     self.assertContains(response, 'id')
 
     #Use Case: able to see a date's description
-    def test_date_desc(self):
-        response = self.client.get(reverse('dates-detail', kwargs={'pk':1}))
-        self.assertContains(response, 'description')
+    # def test_date_desc(self):
+    #     response = self.client.get(reverse('dates-detail', kwargs={'pk':1}))
+    #     self.assertContains(response, 'description')
 
     #Use Case: not able to see a non-existent user
     def test_no_user(self):
