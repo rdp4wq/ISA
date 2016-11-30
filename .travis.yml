@@ -28,6 +28,7 @@ install: # prepare mySQL database
 before_script:
   - docker-compose up -d
   - docker ps -a
+  - docker start sugar-entities1
 
 script:
   - >
