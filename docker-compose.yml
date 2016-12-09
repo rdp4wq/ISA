@@ -80,7 +80,25 @@ batch:
        - ./batch:/app/batch
     command: bash -c "python /app/batch/main.py"
 
+selenium:
+    image: selenium/standalone-chrome
+    container_name: selenium-chrome-standalone
+    links:
+        - web-load-balancer
+    ports:
+        - "4444:4444"
 
+# see https://github.com/SeleniumHQ/docker-selenium/issues/79 for /dev/shm volume mount
+selenium-main:
+    image: tp33/django
+    container_name: selenium-main
+    links:
+       - selenium
+       - web-load-balancer
+    volumes:
+       - ./selenium_tests:/app/selenium_tests
+       - /dev/shm:/dev/shm 
+    command: bash -c "pip install selenium && python /app/selenium_tests/manage.py test front_end_tests"
 
 web-load-balancer:
     image: galexrt/pen
