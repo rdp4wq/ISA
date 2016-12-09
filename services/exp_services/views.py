@@ -96,7 +96,6 @@ def get_daddy_from_models(request, pk):
 def get_dates(request):
     url = ENTITIES_URL + 'api/v1/dates/'
     r = requests.get(url)
-    users = requests.get('http://sugar_services:8000/api/v1/services/users/')
     return JsonResponse(r.json(), content_type='application/json')
 
 def index_dates_at_startup(request):
