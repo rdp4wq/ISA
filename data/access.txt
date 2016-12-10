@@ -1,4 +1,11 @@
 tp	4
 bob	5
+bob	1
+bob	4
+bob	6
+bob	8
 tp	4
+tp	1
+hank	1
 hank	3
+hank	4
